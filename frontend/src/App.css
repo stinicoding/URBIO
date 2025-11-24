@@ -1,0 +1,98 @@
+h1 {
+    font-family: Arial, Helvetica, sans-serif;
+    font-size: 30px;
+    color: white;
+    text-shadow: 2px 2px #E86B92;
+}
+
+h2 {
+    font-family: Arial, Helvetica, sans-serif;
+    font-size: 30px;
+    color: white;
+    text-align: center;
+}
+
+h3 {
+    font-family: Arial, Helvetica, sans-serif;
+    font-size: 30px;
+    color: #E86B92;
+    text-align: center;
+}
+
+h4 {
+    font-family: Arial, Helvetica, sans-serif;
+    font-size: 18px;
+    color: #252525;
+    text-align: center;
+}
+
+button {
+    height: 24px;
+    text-align: center;
+    font-family: Arial, Helvetica, sans-serif;
+    font-size: 16px;
+    color: white;
+    background-color: #E86B92;
+    border-radius: 5px;
+    border-color: white;
+}
+
+.flex {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 1em;
+}
+
+.header-background {
+    background-color: #4e7ce6;
+    padding: 10px;
+}
+
+.logo {
+    height: 70px;
+}
+
+.splash {
+    background-image: url("./pictures/Barcelona_splash.jpg");
+    background-repeat: no-repeat;
+    background-size: cover;
+    height: 100vh;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+}
+
+.footer-text {
+    font-family: Arial, Helvetica, sans-serif;
+    font-size: 16px;
+    text-align: center;
+}
+
+.search {
+    display: flex;
+    justify-content: center;
+}
+
+.search-input {
+    border-color: #E86B92;
+    border-radius: 5px;
+    height: 18px;
+    margin-bottom: 20px;
+}
+
+.city-article {
+    display: flex;
+    justify-content: center;
+}
+
+.city-picture {
+    height: 300px;
+    border-radius: 5px;
+}
+
+.grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+}
