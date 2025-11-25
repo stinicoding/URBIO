@@ -22,8 +22,8 @@ function Startpage() {
       </section>
       <section className="grid">
         {cities.map((ele) => (
-          <article>
-            <div class="city-article">
+          <article key={ele.name}>
+            <div className="city-article">
               <img className="city-picture" src={ele.img} />
             </div>
             <h4>{ele.name}</h4>
@@ -31,9 +31,9 @@ function Startpage() {
         ))}
       </section>
       <section className="flex-buttons">
-      <button className="button-categories">Trending Cities</button>
-      <button className="button-categories">Trending Blogs</button>
-      <button className="button-categories">Create Your Own Story</button>
+        <button className="button-categories">Trending Cities</button>
+        <button className="button-categories">Trending Blogs</button>
+        <button className="button-categories">Create Your Own Story</button>
       </section>
     </>
   );

@@ -1,4 +1,5 @@
 import { useState, useEffect } from "react";
+import { useNavigate } from "react-router";
 import axios from "axios";
 
 function Register() {
@@ -9,6 +10,7 @@ function Register() {
   const [message, setMessage] = useState("");
   const [shown, setShown] = useState(false);
   const [success, setSuccess] = useState(false);
+  const navigate = useNavigate()
 
   useEffect(() => {
     setShown(true);
@@ -16,7 +18,7 @@ function Register() {
 
   const validateRegistration = async () => {
     if (!name) {
-        setMessage("Set a Name")
+      setMessage("Set a Name");
     }
     let email_split1 = email.split("@");
     let email_split2 = email.split(".");
@@ -34,6 +36,7 @@ function Register() {
       if (result === true) {
         setMessage("Successfully registered");
         setSuccess(true);
+        navigate("/login")
       }
     }
   };

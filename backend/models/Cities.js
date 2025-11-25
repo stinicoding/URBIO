@@ -10,7 +10,6 @@ const citySchema = new mongoose.Schema({
   //url of image?
   img: {
     type: String,
-    required: false,
     unique: true,
   },
   created: {
