@@ -4,7 +4,7 @@ const validator = require("validator");
 
 const registerUser = async (req, res) => {
   const { name, email, password, password2 } = req.body;
-  if (!name || !email || !password || password2) {
+  if (!name || !email || !password || !password2) {
     return res.send({ ok: false, message: "All fields required" });
   }
   if (password !== password2) {

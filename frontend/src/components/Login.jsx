@@ -1,11 +1,15 @@
 function Login() {
   return (
     <>
+    <div className="screen">
     <div className="box">
       <h3>Login</h3>
-      <input type="mail" placeholder="E-Mail"/>
-      <input type="password" placeholder="Password"/>
+      <label>E-Mail</label>
+      <input type="email"/>
+      <label>Password</label>
+      <input type="password"/>
       <button>Login</button>
+    </div>
     </div>
     </>
   )

@@ -1,4 +1,5 @@
 import { useState, useEffect } from "react";
+import axios from "axios";
 
 function Register() {
   const [name, setName] = useState("");
@@ -10,22 +11,26 @@ function Register() {
   const [success, setSuccess] = useState(false);
 
   useEffect(() => {
-    validateRegistration();
     setShown(true);
   }, [email, password, password2]);
 
-  const validateRegistration = () => {
-    let email_split1 = email.split("@")
-    let email_split2 = email.split(".")
-    if (email_split1.length !== 2 && email_split2 !== 2) {
-        setMessage("Invalid Email")
+  const validateRegistration = async () => {
+    if (!name) {
+        setMessage("Set a Name")
     }
-    if (password.length < 8) {
+    let email_split1 = email.split("@");
+    let email_split2 = email.split(".");
+    //console.log(email_split1)
+    //console.log(email_split2)
+    if (email_split1.length !== 2 || email_split2.length !== 2) {
+      setMessage("Invalid Email");
+    } else if (password.length < 8) {
       setMessage("Password must have at least 8 characters.");
     } else if (password !== password2) {
       setMessage("Passwords should match.");
     } else {
-      let result = register();
+      let result = await register();
+      //console.log(result);
       if (result === true) {
         setMessage("Successfully registered");
         setSuccess(true);
@@ -37,9 +42,9 @@ function Register() {
     try {
       const response = await axios.post(
         "http://localhost:4040/users/register",
-        { name: name, email: email, password: password }
+        { name: name, email: email, password: password, password2: password2 }
       );
-      console.log(response)
+      //console.log(response);
       if (response.data.ok) {
         return true;
       } else {
@@ -53,11 +58,11 @@ function Register() {
   return (
     <>
       {success ? (
-        <div>
-          <p>{message}</p>
+        <div className="screen">
+          <h4>{message}</h4>
         </div>
       ) : (
-        <div>
+        <div className="screen">
           <div className="box">
             <h3>Register</h3>
             <label>Your Name</label>
@@ -77,7 +82,7 @@ function Register() {
             <button onClick={validateRegistration}>Register</button>
           </div>
           <div>
-            <p>{shown && message}</p>
+            <h4>{shown && message}</h4>
           </div>
         </div>
       )}
