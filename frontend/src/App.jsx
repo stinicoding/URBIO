@@ -4,13 +4,14 @@ import Footer from "./components/Footer"
 import Startpage from "./components/Startpage"
 import Trending from "./components/Trending"
 import Login from "./components/Login"
+import Register from "./components/Register"
 
 
 function App() {
   return (
     <>
       <Header />
-      <Login />
+      <Register />
       <Footer />
     </>
   );
