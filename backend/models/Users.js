@@ -5,32 +5,24 @@ const userSchema = new mongoose.Schema({
   name: {
     type: String,
     required: true,
-    unique: false,
   },
-  mail: {
-    type: mail,
+  email: {
+    type: String,
     required: true,
     unique: true,
   },
   password: {
-    type: password,
+    type: String,
     required: true,
-    unique: false,
   },
   postings: {
     type: Array,
-    required: true,
-    unique: true
   },
   friends: {
     type: Array,
-    required: true,
-    unique: false
   },
   groups: {
     type: Array,
-    required: true,
-    unique: false
   },
   created: {
     type: Date,

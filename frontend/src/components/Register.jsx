@@ -11,17 +11,42 @@ function Register() {
 
   useEffect(() => {
     validateRegistration();
-    setShown(true)
+    setShown(true);
   }, [email, password, password2]);
 
   const validateRegistration = () => {
+    let email_split1 = email.split("@")
+    let email_split2 = email.split(".")
+    if (email_split1.length !== 2 && email_split2 !== 2) {
+        setMessage("Invalid Email")
+    }
     if (password.length < 8) {
       setMessage("Password must have at least 8 characters.");
     } else if (password !== password2) {
       setMessage("Passwords should match.");
     } else {
-      setMessage("Successfully registered");
-      setSuccess(true);
+      let result = register();
+      if (result === true) {
+        setMessage("Successfully registered");
+        setSuccess(true);
+      }
+    }
+  };
+
+  const register = async () => {
+    try {
+      const response = await axios.post(
+        "http://localhost:4040/users/register",
+        { name: name, email: email, password: password }
+      );
+      console.log(response)
+      if (response.data.ok) {
+        return true;
+      } else {
+        return false;
+      }
+    } catch (error) {
+      return error;
     }
   };
 
@@ -29,7 +54,7 @@ function Register() {
     <>
       {success ? (
         <div>
-          <p>{shown && message}</p>
+          <p>{message}</p>
         </div>
       ) : (
         <div>
@@ -49,7 +74,7 @@ function Register() {
               type="password"
               onChange={(e) => setPassword2(e.target.value)}
             />
-            <button>Register</button>
+            <button onClick={validateRegistration}>Register</button>
           </div>
           <div>
             <p>{shown && message}</p>
