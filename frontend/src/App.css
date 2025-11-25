@@ -37,6 +37,33 @@ button {
     border-color: white;
 }
 
+.button-more-section {
+    display: flex;
+    justify-content: center;
+    margin: 10px 0px 20px 0px
+}
+
+.button-more {
+    height: 24px;
+    text-align: center;
+    font-family: Arial, Helvetica, sans-serif;
+    font-size: 16px;
+    color: white;
+    background-color: #E86B92;
+    border-radius: 5px;
+}
+
+.button-categories {
+    height: 24px;
+    text-align: center;
+    font-family: Arial, Helvetica, sans-serif;
+    font-size: 16px;
+    color: white;
+    background-color: #E86B92;
+    border-radius: 5px;
+    width: 200px;
+}
+
 .flex {
     display: flex;
     justify-content: space-between;
@@ -44,13 +71,23 @@ button {
     gap: 1em;
 }
 
+.flex-buttons {
+    display: flex;
+    justify-content: space-around;
+    margin-bottom: 20px; 
+}
+
 .header-background {
     background-color: #4e7ce6;
-    padding: 10px;
+    padding: 10px 20px 10px 20px;
 }
 
 .logo {
     height: 70px;
+}
+
+.icon-profile {
+    height: 40px;
 }
 
 .splash {
@@ -95,4 +132,15 @@ button {
 .grid {
     display: grid;
     grid-template-columns: repeat(3, 1fr);
+}
+
+.box {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    border: 2px solid #4e7ce6;
+    border-radius: 5px;
+    width: 600px;
+    padding: 20px;
+    margin: 20px;
 }

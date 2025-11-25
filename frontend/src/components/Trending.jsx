@@ -1,24 +1,24 @@
 import Barcelona from "../pictures/Barcelona.png";
 import Istanbul from "../pictures/Istanbul.png";
 import Berlin from "../pictures/Berlin.png";
+import Lissabon from "../pictures/Lissabon.png";
+import Paris from "../pictures/Paris.png";
+import Amsterdam from "../pictures/Amsterdam.png";
 
 const cities = [
   { name: "Barcelona", img: Barcelona },
   { name: "Istanbul", img: Istanbul },
   { name: "Berlin", img: Berlin },
+  { name: "Lissabon", img: Lissabon },
+  { name: "Paris", img: Paris },
+  { name: "Amsterdam", img: Amsterdam },
 ];
 
-function Startpage() {
+function Trending() {
   return (
     <>
-      <section className="splash">
-        <h2>YOUR NEST. YOUR STORY.</h2>
-      </section>
       <section>
-        <h3>Find Your Nest</h3>
-        <div className="search">
-          <input className="search-input" type="text" placeholder="Barcelona" />
-        </div>
+        <h3>Trending</h3>
       </section>
       <section className="grid">
         {cities.map((ele) => (
@@ -30,13 +30,11 @@ function Startpage() {
           </article>
         ))}
       </section>
-      <section className="flex-buttons">
-      <button className="button-categories">Trending Cities</button>
-      <button className="button-categories">Trending Blogs</button>
-      <button className="button-categories">Create Your Own Story</button>
+      <section className="button-more-section">
+      <button className="button-more">See More</button>
       </section>
     </>
   );
 }
 
-export default Startpage;
+export default Trending;
