@@ -2,7 +2,7 @@ import Profile from "../pictures/Profile.png";
 import Barcelona_splash from "../pictures/Barcelona_splash.jpg";
 import axios from "axios";
 
-import { useState, Fragment } from "react";
+import { useState, useEffect, Fragment } from "react";
 import {
   Button,
   TextField,
@@ -18,24 +18,25 @@ import {
 } from "@mui/material";
 import {
   LocalizationProvider,
-  DatePicker,
-  TimePicker,
+  DateTimePicker, //combines date and time picker in one
 } from "@mui/x-date-pickers";
 import { AdapterDayjs } from "@mui/x-date-pickers/AdapterDayjs";
 import dayjs from "dayjs"; //npm install @mui/x-date-pickers dayjs
-//import usePlacesAutocomplete from "use-places-autocomplete"; //npm install use-places-autocomplete
 
 const labelOptions = ["Viewpoint", "Sightseeing", "Architecture"];
 
 function Blog() {
   const [open, setOpen] = useState(false);
+  const [caption, setCaption] = useState("")
+  const [description, setDescription] = useState("")
   const [labels, setLabels] = useState([]);
-  const [date, setDate] = useState(dayjs());
-  const [time, setTime] = useState(dayjs());
+  const [datetime, setDatetime] = useState(dayjs());
   const [location, setLocation] = useState("");
   const [suggestion, setSuggestion] = useState([]);
-  //const { ready, value, setValue, suggestions } = usePlacesAutocomplete();
+  //const [showsugg, setShowsugg] = useState(false)
   const [stars, setStars] = useState(3);
+
+  //console.log(datetime.format())
 
   const handleClickOpen = () => {
     setOpen(true);
@@ -45,9 +46,25 @@ function Blog() {
     setOpen(false);
   };
 
+  const savePost = async () => {
+    try {
+      const response = await axios.post("http://localhost:4040/posts/newpost", {
+        caption: caption,
+        description: description,
+        labels: labels,
+        datetime: datetime.format(),
+        location: location,
+        picture: "test"
+      })
+    } catch (error) {
+      console.log(error)
+    }
+  }
+
   const handleSubmit = (event) => {
     event.preventDefault();
     handleClose();
+    savePost()
   };
 
   const options = {
@@ -61,10 +78,15 @@ function Blog() {
     },
   };
 
+  useEffect (() => {
+    findPlace()
+  }, [location])
+
   const findPlace = async () => {
     try {
       const response = await axios.request(options);
-      setSuggestion(response.data);
+      setSuggestion(response.data.predictions);
+      //console.log(response.data.predictions)
     } catch (error) {
       console.error(error);
     }
@@ -82,7 +104,7 @@ function Blog() {
             <DialogTitle>New Blog Post</DialogTitle>
             <DialogContent>
               <DialogContentText>New Blog Post</DialogContentText>
-              <form onSubmit={handleSubmit} id="subscription-form">
+              <form className="new-post-form">
                 <TextField
                   autoFocus
                   required
@@ -91,6 +113,8 @@ function Blog() {
                   type="text"
                   fullWidth
                   variant="standard"
+                  value={caption}
+                  onChange={(value) => setCaption(value)}
                 />
                 <TextField
                   autoFocus
@@ -100,6 +124,8 @@ function Blog() {
                   type="text"
                   fullWidth
                   variant="standard"
+                  value={description}
+                  onChange={(value) => setDescription(value)}
                 />
                 <TextField
                   autoFocus
@@ -126,15 +152,10 @@ function Blog() {
                   )}
                 />
                 <LocalizationProvider dateAdapter={AdapterDayjs}>
-                  <DatePicker
-                    label="Date"
-                    value={date}
-                    onChange={(value) => setDate(value)}
-                  />
-                  <TimePicker
-                    label="Time"
-                    value={time}
-                    onChange={(value) => setTime(value)}
+                  <DateTimePicker
+                    label="Datetime"
+                    value={datetime}
+                    onChange={(value) => setDatetime(value)}
                   />
                 </LocalizationProvider>
                 <TextField
@@ -144,7 +165,7 @@ function Blog() {
                 />
                 <List>
                   {suggestion?.map((s) => (
-                    <ListItem key={s.place_id}>{s.description}</ListItem>
+                    <ListItem onClick={()=>setLocation(s.description)} key={s.place_id}>{s.description}</ListItem>
                   ))}
                 </List>
                 <Rating
@@ -153,11 +174,10 @@ function Blog() {
                   onChange={(event, newValue) => setStars(newValue)}
                 />
               </form>
-              <button onClick={findPlace}>Search</button>
             </DialogContent>
             <DialogActions>
               <Button onClick={handleClose}>CANCEL</Button>
-              <Button type="submit" form="subscription-form">
+              <Button onSubmit={handleSubmit} type="submit" form="subscription-form">
                 POST
               </Button>
             </DialogActions>
@@ -206,6 +226,7 @@ function Blog() {
             time discovering a new detail or a new feeling.
           </p>
           <p>Rating: ★★★★★</p>
+          <p>Posted: 04.09.2025 12:00PM</p>
         </section>
       </div>
     </>

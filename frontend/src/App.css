@@ -173,6 +173,12 @@ button {
     margin: 20px auto;
 }
 
+.new-post-form {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+}
+
 .post-grid {
     display: grid;
     grid-template-columns: repeat(2, 1fr);
