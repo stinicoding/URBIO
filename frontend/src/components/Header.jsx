@@ -9,13 +9,14 @@ function Header({ isLoggedIn }) {
         <img className="logo" src={Logo_Pigeon} alt="URBIO-Logo" />
         <h1>URBIO</h1>
       </div>
-      {isLoggedIn ? (
+      {
+      isLoggedIn ? (
         <div className="flex">
-          <button>MyBlog</button>
-          <button>Friends</button>
-          <button>Groups</button>
-          <button>Events</button>
-          <img className="icon-profile" src={Profile} />
+          <NavLink className="button-nav" to={"/blog"}>MyBlog</NavLink>
+          <NavLink className="button-nav">Friends</NavLink>
+          <NavLink className="button-nav">Groups</NavLink>
+          <NavLink className="button-nav">Events</NavLink>
+          <img className="icon-profile" src={Profile} alt="Profile"/>
         </div>
       ) : (
         <div className="flex">

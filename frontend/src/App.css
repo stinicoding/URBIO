@@ -66,14 +66,27 @@ button {
 }
 
 .button-categories {
-    height: 24px;
+    height: 20px;
     text-align: center;
     font-family: Arial, Helvetica, sans-serif;
     font-size: 16px;
+    text-decoration: none;
     color: white;
     background-color: #E86B92;
     border-radius: 5px;
     width: 200px;
+}
+
+.button-nav {
+    height: 20px;
+    text-align: center;
+    font-family: Arial, Helvetica, sans-serif;
+    font-size: 16px;
+    text-decoration: none;
+    color: white;
+    background-color: #E86B92;
+    border-radius: 5px;
+    width: 80px;
 }
 
 .flex {
@@ -159,3 +172,47 @@ button {
     padding: 20px;
     margin: 20px auto;
 }
+
+.post-grid {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    margin: 20px;
+    gap: 20px;
+}
+
+.post-info {
+    display: flex;
+    align-items: center;
+    gap: 20px;
+}
+
+.post-box {
+    display: flex;
+    flex-direction: column;
+    border: 2px solid #4e7ce6;
+    border-radius: 5px;
+    width: 57vw;
+    padding: 20px;
+}
+
+.post-img {
+    width: 60vw;
+    margin-bottom: 20px;
+}
+
+.post-label {
+    height: 20px;
+    text-align: center;
+    font-family: Arial, Helvetica, sans-serif;
+    font-size: 12px;
+    color: white;
+    background-color: #E86B92;
+    border-radius: 5px;
+    border-color: white;
+}
+
+.post-labels {
+    margin-bottom: 20px;
+}
+
+

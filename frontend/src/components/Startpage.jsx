@@ -1,6 +1,7 @@
 import Barcelona from "../pictures/Barcelona.png";
 import Istanbul from "../pictures/Istanbul.png";
 import Berlin from "../pictures/Berlin.png";
+import { NavLink } from "react-router";
 
 const cities = [
   { name: "Barcelona", img: Barcelona },
@@ -31,9 +32,9 @@ function Startpage() {
         ))}
       </section>
       <section className="flex-buttons">
-        <button className="button-categories">Trending Cities</button>
-        <button className="button-categories">Trending Blogs</button>
-        <button className="button-categories">Create Your Own Story</button>
+        <NavLink className="button-categories" to={"/trending"}>Trending Cities</NavLink>
+        <NavLink className="button-categories" to={"/"}>Trending Blogs</NavLink>
+        <NavLink className="button-categories" to={"/"}>Create Your Own Story</NavLink>
       </section>
     </>
   );

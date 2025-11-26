@@ -1,14 +1,15 @@
 import "./App.css";
+import { BrowserRouter as Router, Routes, Route } from "react-router";
+import { useState, useEffect } from "react";
+import * as jose from "jose"; //npm i jose
+import axios from "axios";
 import Header from "./components/Header";
 import Footer from "./components/Footer";
 import Startpage from "./components/Startpage";
 import Trending from "./components/Trending";
 import Login from "./components/Login";
 import Register from "./components/Register";
-import { BrowserRouter as Router, Routes, Route } from "react-router";
-import { useState, useEffect } from "react";
-import * as jose from "jose"; //npm i jose
-import axios from "axios";
+import Blog from "./components/Blog";
 
 function App() {
   const [isLoggedIn, setIsLoggedIn] = useState(false);
@@ -52,6 +53,7 @@ function App() {
           <Route path="/register" element={<Register />} />
           <Route path="/login" element={<Login login={login} />} />
           <Route path="/trending" element={<Trending />} />
+          <Route path="/blog" element={<Blog />} />
         </Routes>
         <Footer />
       </Router>
