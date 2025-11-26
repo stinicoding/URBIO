@@ -2,6 +2,10 @@ const mongoose = require("mongoose");
 const Schema = mongoose.Schema;
 
 const postSchema = new mongoose.Schema({
+  owner: {
+    type: String,
+    required: true,
+  },
   caption: {
     type: String,
     required: true,
@@ -13,11 +17,7 @@ const postSchema = new mongoose.Schema({
   labels: {
     type: Array,
   },
-  date: {
-    type: Date,
-    required: true,
-  },
-  time: {
+  datetime: {
     type: Date,
     required: true,
   },

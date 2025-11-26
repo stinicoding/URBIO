@@ -53,7 +53,7 @@ function App() {
           <Route path="/register" element={<Register />} />
           <Route path="/login" element={<Login login={login} />} />
           <Route path="/trending" element={<Trending />} />
-          <Route path="/blog" element={<Blog />} />
+          <Route path="/blog" element={<Blog owner={user.email}/>} />
         </Routes>
         <Footer />
       </Router>

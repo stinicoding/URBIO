@@ -25,7 +25,7 @@ import dayjs from "dayjs"; //npm install @mui/x-date-pickers dayjs
 
 const labelOptions = ["Viewpoint", "Sightseeing", "Architecture"];
 
-function Blog() {
+function Blog({owner}) {
   const [open, setOpen] = useState(false);
   const [caption, setCaption] = useState("")
   const [description, setDescription] = useState("")
@@ -49,6 +49,7 @@ function Blog() {
   const savePost = async () => {
     try {
       const response = await axios.post("http://localhost:4040/posts/newpost", {
+        owner: owner,
         caption: caption,
         description: description,
         labels: labels,
@@ -56,6 +57,7 @@ function Blog() {
         location: location,
         picture: "test"
       })
+      console.log(response)
     } catch (error) {
       console.log(error)
     }
@@ -114,7 +116,7 @@ function Blog() {
                   fullWidth
                   variant="standard"
                   value={caption}
-                  onChange={(value) => setCaption(value)}
+                  onChange={(e) => setCaption(e.target.value)}
                 />
                 <TextField
                   autoFocus
@@ -125,7 +127,7 @@ function Blog() {
                   fullWidth
                   variant="standard"
                   value={description}
-                  onChange={(value) => setDescription(value)}
+                  onChange={(e) => setDescription(e.target.value)}
                 />
                 <TextField
                   autoFocus
@@ -177,7 +179,7 @@ function Blog() {
             </DialogContent>
             <DialogActions>
               <Button onClick={handleClose}>CANCEL</Button>
-              <Button onSubmit={handleSubmit} type="submit" form="subscription-form">
+              <Button onClick={handleSubmit} type="submit" form="subscription-form">
                 POST
               </Button>
             </DialogActions>

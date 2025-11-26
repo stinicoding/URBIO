@@ -1,10 +1,11 @@
 const Posts = require("../models/Posts.js");
 
 const savePost = async (req, res) => {
-  const { caption, description, labels, datetime, location, picture } =
+  const { owner, caption, description, labels, datetime, location, picture } =
     req.body;
   try {
     const newPost = {
+      owner: owner,
       caption: caption,
       description: description,
       labels: labels,
