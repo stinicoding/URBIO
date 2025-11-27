@@ -65,22 +65,31 @@ function Blog({ owner }) {
   const [location, setLocation] = useState("");
   const [suggestion, setSuggestion] = useState([]);
   //const [showsugg, setShowsugg] = useState(false)
-  const [stars, setStars] = useState(3);
-  const [allPosts, setAllPosts] = useState([])
+  const [rating, setRating] = useState(0);
+  const [comments, setComments] = useState([]);
+  const [allPosts, setAllPosts] = useState([]);
 
   //console.log(datetime.format())
+  console.log(allPosts); //outside of the function so the state is updated
 
-  const displayPosts = async (owner) => {
+  const displayPosts = async () => {
     try {
-      const response = await axios.get(`http://localhost:4040/posts/getposts/${owner}`);
-      //console.log(response.data);
-      await setAllPosts(response.data.data)
-      console.log(allPosts)
-      
+      //post function, because get will pass the email in the url
+      const response = await axios.post(
+        `http://localhost:4040/posts/getposts`,
+        { owner: owner }
+      );
+      //console.log(response.data.data);
+      setAllPosts(response.data.data);
     } catch (error) {
       console.log(error);
     }
   };
+
+  useEffect(() => {
+    displayPosts();
+  }, []);
+  //without the [] it will run everytime any state updates, with the empty [] it runs once
 
   const handleClickOpen = () => {
     setOpen(true);
@@ -100,6 +109,8 @@ function Blog({ owner }) {
         datetime: datetime.format(),
         location: location,
         picture: "test",
+        rating: rating,
+        comments: comments,
       });
       console.log(response);
     } catch (error) {
@@ -141,12 +152,29 @@ function Blog({ owner }) {
   return (
     <>
       <h3>MyBlog</h3>
-      <div>
+      <div className="screen">
+        {allPosts.length < 1 && <h4>Create your first Post!</h4>}
         <Fragment>
-          <Button variant="outlined" onClick={handleClickOpen}>
-            + New Blog Post
-          </Button>
-          <Dialog open={open} onClose={handleClose}>
+          <div className="center">
+            <Button
+              id="button-mui"
+              variant="outlined"
+              onClick={handleClickOpen}
+            >
+              + New Blog Post
+            </Button>
+          </div>
+          <Dialog
+            open={open}
+            onClose={handleClose}
+            PaperProps={{
+              sx: {
+                width: "100vw",
+                maxHeight: "80vh",
+                margin: "auto",
+              },
+            }}
+          >
             <DialogTitle>New Blog Post</DialogTitle>
             <DialogContent>
               <DialogContentText>New Blog Post</DialogContentText>
@@ -170,6 +198,8 @@ function Blog({ owner }) {
                   type="text"
                   fullWidth
                   variant="standard"
+                  multiline
+                  rows={8}
                   value={description}
                   onChange={(e) => setDescription(e.target.value)}
                 />
@@ -221,8 +251,8 @@ function Blog({ owner }) {
                 </List>
                 <Rating
                   name="simple-controlled"
-                  value={stars}
-                  onChange={(event, newValue) => setStars(newValue)}
+                  value={rating}
+                  onChange={(event, newValue) => setRating(newValue)}
                 />
               </form>
             </DialogContent>
@@ -239,52 +269,49 @@ function Blog({ owner }) {
           </Dialog>
         </Fragment>
       </div>
-      <div className="post-grid">
-        <section>
-          <button onClick={displayPosts}>Test</button>
-          <div className="post-info">
-            <img className="icon-profile" src={Profile} alt="Profile" />
-            <h4>Carrer de Mallorca 401, 08013 Barcelona</h4>
-            <p>03.09.25</p>
-            <p>07:12PM</p>
+      {allPosts.map(
+        (
+          ele //map without {} or return to actually render the posts
+        ) => (
+          <div key={ele._id} className="post-grid">
+            <section>
+              <div className="post-info">
+                <div className="post-info">
+                  <img className="icon-profile" src={Profile} alt="Profile" />
+                  <h4 className="post-location">{ele.location}</h4>
+                </div>
+                <p>{dayjs(ele.datetime).format("MMMM D, YYYY h:mm A")}</p>
+              </div>
+              <img className="post-img" src={Barcelona_splash} />
+              <div className="post-labels">
+                {ele.labels?.map((lab, idx) => (
+                  <button key={idx} className="post-label">
+                    {lab}
+                  </button>
+                ))}
+              </div>
+              <div className="post-box">
+                <p>Comments</p>
+                <input type="text" placeholder="comment" />
+              </div>
+            </section>
+            <section>
+              <h4>{ele.caption}</h4>
+              <p>{ele.description}</p>
+              <div className="post-rating">
+                <p>Rating: </p>
+                <Rating
+                  name="simple-controlled"
+                  value={rating}
+                  readOnly
+                  sx={{ fontSize: 18 }}
+                />
+              </div>
+              <p>Posted: {dayjs(ele.datetime).format("MMMM D, YYYY h:mm A")}</p>
+            </section>
           </div>
-          <img className="post-img" src={Barcelona_splash} />
-          <div className="post-labels">
-            <button className="post-label">Viewpoint</button>
-            <button className="post-label">Sightseeing</button>
-            <button className="post-label">Architecture</button>
-          </div>
-          <div className="post-box">
-            <p>Comments</p>
-            <input type="text" placeholder="comment" />
-          </div>
-        </section>
-        <section>
-          <h4>A Perfect Viewpoint of the Sagrada Família</h4>
-          <p>
-            Barcelona is full of breathtaking sights, but few compare to
-            catching a perfect view of the Sagrada Família. No matter how many
-            times you've seen Gaudí's masterpiece, its towering spires and
-            intricate façades always feel new. The basilica is constantly
-            evolving, and watching it from a good viewpoint gives you a mix of
-            history, architecture, and urban energy in one frame. One of the
-            best ways to enjoy the view is simply to walk around the surrounding
-            streets. From Plaça de Gaudí, you get a peaceful angle with the
-            reflection of the basilica in the small lake. From Avinguda de
-            Gaudí, the straight boulevard creates a dramatic, postcard-perfect
-            corridor leading directly to the church. And if you like rooftop
-            perspectives, many nearby hotels and cafés offer terraces where the
-            basilica rises above the city like a surreal sculpture. Whether you
-            visit early in the morning, when the light hits the Nativity façade,
-            or at sunset, when the stone glows warm and golden, the Sagrada
-            Família always rewards you with something unforgettable. It's not
-            just a landmark—it's a view you can return to again and again, each
-            time discovering a new detail or a new feeling.
-          </p>
-          <p>Rating: ★★★★★</p>
-          <p>Posted: 04.09.2025 12:00PM</p>
-        </section>
-      </div>
+        )
+      )}
     </>
   );
 }

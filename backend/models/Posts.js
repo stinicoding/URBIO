@@ -29,6 +29,12 @@ const postSchema = new mongoose.Schema({
     type: String,
     required: true,
   },
+  rating: {
+    type: Number,
+  },
+  comments: {
+    type: Array,
+  },
   created: {
     type: Date,
     default: Date.now,

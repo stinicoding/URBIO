@@ -2,7 +2,7 @@ const Posts = require("../models/Posts.js");
 const Users = require("../models/Users.js");
 
 const savePost = async (req, res) => {
-  const { owner, caption, description, labels, datetime, location, picture } =
+  const { owner, caption, description, labels, datetime, location, picture, rating, comments } =
     req.body;
   try {
     const newPost = {
@@ -13,6 +13,8 @@ const savePost = async (req, res) => {
       datetime: datetime,
       location: location,
       picture: picture,
+      rating: rating,
+      comments: comments
     };
     //save post
     const posting = await Posts.create(newPost);
@@ -26,10 +28,12 @@ const savePost = async (req, res) => {
 };
 
 const displayPosts = async (req, res) => {
-  const { owner } = req.params;
+  const { owner } = req.body;
+  console.log(owner)
   try {
-    const postings = await Posts.find({owner: owner})
-    res.send({ok: true, message: postings})
+    const postings = await Posts.find({owner: owner}).sort({ datetime: -1 });
+    console.log(postings)
+    res.send({ok: true, data: postings})
   } catch(error) {
     res.send({ok: false, message: error})
   }

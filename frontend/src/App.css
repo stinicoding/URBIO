@@ -49,6 +49,16 @@ button {
     border-color: white;
 }
 
+#button-mui {
+    color: #E86B92;
+    border: 1px solid #E86B92;
+}
+
+.center {
+    display: flex;
+    justify-content: center;
+}
+
 .button-more-section {
     display: flex;
     justify-content: center;
@@ -161,6 +171,7 @@ button {
 
 .screen {
     height: 100vh;
+    
 }
 
 .box {
@@ -188,8 +199,12 @@ button {
 
 .post-info {
     display: flex;
+    justify-content: space-between;
     align-items: center;
-    gap: 20px;
+}
+
+.post-location {
+    margin-left: 20px;
 }
 
 .post-box {
@@ -202,7 +217,7 @@ button {
 }
 
 .post-img {
-    width: 60vw;
+    width: 63vw;
     margin-bottom: 20px;
 }
 
@@ -221,4 +236,7 @@ button {
     margin-bottom: 20px;
 }
 
-
+.post-rating {
+    display: flex;
+    align-items: center;
+}
