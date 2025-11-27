@@ -3,5 +3,6 @@ const router = require('express').Router()
 
      router.post('/newpost',controller.savePost)
      router.post('/getposts', controller.displayPosts)
+     router.post('/newcomment', controller.saveComment)
 
      module.exports = router

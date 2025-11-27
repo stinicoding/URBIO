@@ -18,10 +18,8 @@ const savePost = async (req, res) => {
     };
     //save post
     const posting = await Posts.create(newPost);
-    console.log(posting)
-    //push post to user postings array
-    //await Users.findOneAndUpdate({email: owner}, { $push: { postings: posting._id } }, {new: true});
-    res.send({ ok: true, message: "New Post saved" });
+    //console.log(posting)
+    res.send({ ok: true, data: posting });
   } catch (error) {
     res.send({ ok: false, message: error });
   }
@@ -32,8 +30,19 @@ const displayPosts = async (req, res) => {
   console.log(owner)
   try {
     const postings = await Posts.find({owner: owner}).sort({ datetime: -1 });
-    console.log(postings)
+    //console.log(postings)
     res.send({ok: true, data: postings})
+  } catch(error) {
+    res.send({ok: false, message: error})
+  }
+}
+
+const saveComment = async (req, res) => {
+  const { comment } = req.body;
+  console.log(comment)
+  try {
+    //const com = await Posts.({})
+    //res.send({ok: true, data: com})
   } catch(error) {
     res.send({ok: false, message: error})
   }
@@ -41,5 +50,6 @@ const displayPosts = async (req, res) => {
 
 module.exports = {
   savePost,
-  displayPosts
+  displayPosts,
+  saveComment
 };

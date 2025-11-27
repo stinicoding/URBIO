@@ -75,6 +75,18 @@ button {
     border-radius: 5px;
 }
 
+.button-blue {
+    height: 20px;
+    width: 100px;
+    text-align: center;
+    font-family: Arial, Helvetica, sans-serif;
+    font-size: 14px;
+    color: white;
+    background-color: #4e7ce6;
+    border-radius: 5px;
+    margin-top: 10px;
+}
+
 .button-categories {
     height: 20px;
     text-align: center;

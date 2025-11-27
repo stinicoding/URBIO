@@ -64,13 +64,13 @@ function Blog({ owner }) {
   const [datetime, setDatetime] = useState(dayjs());
   const [location, setLocation] = useState("");
   const [suggestion, setSuggestion] = useState([]);
-  //const [showsugg, setShowsugg] = useState(false)
+  const [showSuggestion, setShowSuggestion] = useState(false);
   const [rating, setRating] = useState(0);
   const [comments, setComments] = useState([]);
   const [allPosts, setAllPosts] = useState([]);
 
   //console.log(datetime.format())
-  console.log(allPosts); //outside of the function so the state is updated
+  //console.log(allPosts); //outside of the function so the state is updated
 
   const displayPosts = async () => {
     try {
@@ -118,6 +118,25 @@ function Blog({ owner }) {
     }
   };
 
+  /*
+  const saveComment = async (post_id, comment) => {
+    try {
+      const response = await axios.post(
+        "http://localhost:4040/posts/newcomment",
+        {
+          id: post_id,
+          comment: comment,
+        }
+      );
+      console.log(response);
+      
+    } catch (error) {
+      console.log(error);
+    }
+  };*/
+
+  //onClick={saveComment(ele._id)}
+
   const handleSubmit = (event) => {
     event.preventDefault();
     handleClose();
@@ -145,15 +164,19 @@ function Blog({ owner }) {
       setSuggestion(response.data.predictions);
       //console.log(response.data.predictions)
     } catch (error) {
-      console.error(error);
+      console.log(error);
     }
   };
 
   return (
     <>
       <h3>MyBlog</h3>
-      <div className="screen">
-        {allPosts.length < 1 && <h4>Create your first Post!</h4>}
+      <div>
+        {allPosts.length < 1 && (
+          <div className="screen">
+            <h4>Create your first Post!</h4>
+          </div>
+        )}
         <Fragment>
           <div className="center">
             <Button
@@ -236,19 +259,26 @@ function Blog({ owner }) {
                 </LocalizationProvider>
                 <TextField
                   value={location}
-                  onChange={(e) => setLocation(e.target.value)}
+                  onChange={(e) => {
+                    setLocation(e.target.value);
+                    setShowSuggestion(true);
+                  }}
                   label="Location"
                 />
                 <List>
                   {suggestion?.map((s) => (
                     <ListItem
-                      onClick={() => setLocation(s.description)}
+                      onClick={() => {
+                        setLocation(s.description);
+                        setShowSuggestion(false);
+                      }}
                       key={s.place_id}
                     >
                       {s.description}
                     </ListItem>
                   ))}
                 </List>
+
                 <Rating
                   name="simple-controlled"
                   value={rating}
@@ -292,7 +322,11 @@ function Blog({ owner }) {
               </div>
               <div className="post-box">
                 <p>Comments</p>
-                <input type="text" placeholder="comment" />
+                {ele.comments?.map((com) => (
+                  <p className="comment">{com}</p>
+                ))}
+                <input type="text" />
+                <button className="button-blue">Comment</button>
               </div>
             </section>
             <section>
