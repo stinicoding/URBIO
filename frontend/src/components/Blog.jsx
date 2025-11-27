@@ -23,20 +23,64 @@ import {
 import { AdapterDayjs } from "@mui/x-date-pickers/AdapterDayjs";
 import dayjs from "dayjs"; //npm install @mui/x-date-pickers dayjs
 
-const labelOptions = ["Viewpoint", "Sightseeing", "Architecture"];
+const labelOptions = [
+  "Pet-friendly",
+  "Vegan",
+  "Vegetarian",
+  "Gluten-free",
+  "Romantic",
+  "Budget-friendly",
+  "Luxury",
+  "Family-friendly",
+  "Nightlife",
+  "Beach",
+  "Viewpoint",
+  "Sightseeing",
+  "Architecture",
+  "Historic",
+  "Cultural",
+  "Local Favorite",
+  "Outdoor",
+  "Hiking",
+  "Nature",
+  "Hidden Gem",
+  "Popular",
+  "Modern",
+  "Art",
+  "Photography Spot",
+  "Shopping",
+  "Foodie",
+  "Traditional",
+  "Relaxing",
+  "Scenic Route",
+  "Rainy-day Activity",
+];
 
-function Blog({owner}) {
+function Blog({ owner }) {
   const [open, setOpen] = useState(false);
-  const [caption, setCaption] = useState("")
-  const [description, setDescription] = useState("")
+  const [caption, setCaption] = useState("");
+  const [description, setDescription] = useState("");
   const [labels, setLabels] = useState([]);
   const [datetime, setDatetime] = useState(dayjs());
   const [location, setLocation] = useState("");
   const [suggestion, setSuggestion] = useState([]);
   //const [showsugg, setShowsugg] = useState(false)
   const [stars, setStars] = useState(3);
+  const [allPosts, setAllPosts] = useState([])
 
   //console.log(datetime.format())
+
+  const displayPosts = async (owner) => {
+    try {
+      const response = await axios.get(`http://localhost:4040/posts/getposts/${owner}`);
+      //console.log(response.data);
+      await setAllPosts(response.data.data)
+      console.log(allPosts)
+      
+    } catch (error) {
+      console.log(error);
+    }
+  };
 
   const handleClickOpen = () => {
     setOpen(true);
@@ -55,18 +99,18 @@ function Blog({owner}) {
         labels: labels,
         datetime: datetime.format(),
         location: location,
-        picture: "test"
-      })
-      console.log(response)
+        picture: "test",
+      });
+      console.log(response);
     } catch (error) {
-      console.log(error)
+      console.log(error);
     }
-  }
+  };
 
   const handleSubmit = (event) => {
     event.preventDefault();
     handleClose();
-    savePost()
+    savePost();
   };
 
   const options = {
@@ -80,9 +124,9 @@ function Blog({owner}) {
     },
   };
 
-  useEffect (() => {
-    findPlace()
-  }, [location])
+  useEffect(() => {
+    findPlace();
+  }, [location]);
 
   const findPlace = async () => {
     try {
@@ -167,7 +211,12 @@ function Blog({owner}) {
                 />
                 <List>
                   {suggestion?.map((s) => (
-                    <ListItem onClick={()=>setLocation(s.description)} key={s.place_id}>{s.description}</ListItem>
+                    <ListItem
+                      onClick={() => setLocation(s.description)}
+                      key={s.place_id}
+                    >
+                      {s.description}
+                    </ListItem>
                   ))}
                 </List>
                 <Rating
@@ -179,7 +228,11 @@ function Blog({owner}) {
             </DialogContent>
             <DialogActions>
               <Button onClick={handleClose}>CANCEL</Button>
-              <Button onClick={handleSubmit} type="submit" form="subscription-form">
+              <Button
+                onClick={handleSubmit}
+                type="submit"
+                form="subscription-form"
+              >
                 POST
               </Button>
             </DialogActions>
@@ -188,6 +241,7 @@ function Blog({owner}) {
       </div>
       <div className="post-grid">
         <section>
+          <button onClick={displayPosts}>Test</button>
           <div className="post-info">
             <img className="icon-profile" src={Profile} alt="Profile" />
             <h4>Carrer de Mallorca 401, 08013 Barcelona</h4>
