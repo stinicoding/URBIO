@@ -97,6 +97,13 @@ function Blog({ owner }) {
 
   const handleClose = () => {
     setOpen(false);
+    setCaption("")
+    setDescription("")
+    setLabels([])
+    setDatetime(dayjs())
+    setLocation("")
+    setSuggestion([])
+    setRating(0)
   };
 
   const savePost = async () => {
@@ -159,6 +166,10 @@ function Blog({ owner }) {
   }, [location]);
 
   const findPlace = async () => {
+    if (location.length < 3) {
+      setShowSuggestion(false);
+      return;
+    }
     try {
       const response = await axios.request(options);
       setSuggestion(response.data.predictions);
@@ -266,19 +277,19 @@ function Blog({ owner }) {
                   label="Location"
                 />
                 <List>
-                  {suggestion?.map((s) => (
-                    <ListItem
-                      onClick={() => {
-                        setLocation(s.description);
-                        setShowSuggestion(false);
-                      }}
-                      key={s.place_id}
-                    >
-                      {s.description}
-                    </ListItem>
-                  ))}
+                  {showSuggestion &&
+                    suggestion?.map((s) => (
+                      <ListItem
+                        onClick={() => {
+                          setLocation(s.description);
+                          setShowSuggestion(false);
+                        }}
+                        key={s.place_id}
+                      >
+                        {s.description}
+                      </ListItem>
+                    ))}
                 </List>
-
                 <Rating
                   name="simple-controlled"
                   value={rating}
