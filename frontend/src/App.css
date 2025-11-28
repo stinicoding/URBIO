@@ -1,3 +1,7 @@
+body {
+    background-color: rgb(255, 209, 216);
+}
+
 h1 {
     font-family: Arial, Helvetica, sans-serif;
     font-size: 30px;
@@ -50,8 +54,20 @@ button {
 }
 
 #button-mui {
+    color: #4e7ce6;
+    border: 1px solid #4e7ce6;
+    background-color: white;
+}
+
+#button-mui:hover {
+    color: white;
+    border: 1px solid white;
+    background-color: #4e7ce6;
+}
+
+#rating-mui {
     color: #E86B92;
-    border: 1px solid #E86B92;
+    font-size: 18px;
 }
 
 .center {
@@ -85,6 +101,12 @@ button {
     background-color: #4e7ce6;
     border-radius: 5px;
     margin-top: 10px;
+}
+
+.button-blue:hover {
+    color: white;
+    background-color: #E86B92;
+    cursor: pointer;
 }
 
 .button-categories {
@@ -183,7 +205,7 @@ button {
 
 .screen {
     height: 100vh;
-    
+
 }
 
 .box {
@@ -205,8 +227,11 @@ button {
 .post-grid {
     display: grid;
     grid-template-columns: repeat(2, 1fr);
+    background-color: white;
+    padding: 20px;
     margin: 20px;
     gap: 20px;
+    border-radius: 10px;
 }
 
 .post-info {
@@ -237,7 +262,7 @@ button {
     height: 20px;
     text-align: center;
     font-family: Arial, Helvetica, sans-serif;
-    font-size: 12px;
+    font-size: 14px;
     color: white;
     background-color: #E86B92;
     border-radius: 5px;
@@ -251,4 +276,19 @@ button {
 .post-rating {
     display: flex;
     align-items: center;
+}
+
+.show-comments {
+    color: #4e7ce6;
+    cursor: pointer
+}
+
+.comment {
+    display: grid;
+    grid-template-columns: 1fr 3fr;
+}
+
+.comment-owner {
+    color: #E86B92;
+    font-size: 14px;
 }

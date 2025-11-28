@@ -68,6 +68,7 @@ function Blog({ owner }) {
   const [rating, setRating] = useState(0);
   const [comment, setComment] = useState("");
   const [comments, setComments] = useState([]);
+  const [showComments, setShowComments] = useState(false);
   const [allPosts, setAllPosts] = useState([]);
 
   //console.log(datetime.format())
@@ -179,12 +180,15 @@ function Blog({ owner }) {
 
   useEffect(() => {
     displayPosts();
+  }, []); //without the [] it will run everytime any state updates, with the empty [] it runs once
+
+  useEffect(() => {
     if (allPosts.length > 0) {
       allPosts.forEach((post) => {
         displayComments(post._id);
       });
     }
-  }, []); //without the [] it will run everytime any state updates, with the empty [] it runs once
+  }, [allPosts]);
 
   useEffect(() => {
     findPlace();
@@ -343,12 +347,27 @@ function Blog({ owner }) {
                 ))}
               </div>
               <div className="post-box">
-                {comments?.map(
-                  (com) =>
-                    com.post_id == post._id && (
-                      <p className="comment">{com.comment}</p>
-                    )
-                )}
+                <p
+                  className="show-comments"
+                  onClick={async () => {
+                    await displayComments(post._id);
+                    if (showComments === false) {
+                      setShowComments(true);
+                    } else setShowComments(false);
+                  }}
+                >
+                  {showComments ? "Hide Comments" : "Show Comments"}
+                </p>
+                {showComments &&
+                  comments?.map(
+                    (com, index) =>
+                      com.post_id == post._id && (
+                        <div key={index} className="comment">
+                          <p className="comment-owner">{`${com.owner}: `}</p>
+                          <p>{com.comment}</p>
+                        </div>
+                      )
+                  )}
                 <input
                   type="text"
                   placeholder="Add a comment"
@@ -357,9 +376,10 @@ function Blog({ owner }) {
                 />
                 <button
                   className="button-blue"
-                  onClick={() => {
-                    saveComment(post._id);
-                    displayComments(post._id);
+                  onClick={async () => {
+                    await saveComment(post._id);
+                    await displayComments(post._id);
+                    setShowComments(true);
                   }}
                 >
                   SEND
@@ -372,10 +392,10 @@ function Blog({ owner }) {
               <div className="post-rating">
                 <p>Rating: </p>
                 <Rating
+                  id="rating-mui"
                   name="simple-controlled"
-                  value={rating}
+                  value={post.rating}
                   readOnly
-                  sx={{ fontSize: 18 }}
                 />
               </div>
               <p>
