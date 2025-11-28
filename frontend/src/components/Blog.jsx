@@ -122,6 +122,24 @@ function Blog({ owner }) {
     }
   };
 
+  const editPost = async (post_id) => {
+    try {
+      await setOpen(true);
+      const response = await axios.get(
+        `http://localhost:4040/posts/getpost/${post_id}`
+      );
+      console.log(response.data);
+      setCaption(response.data?.caption);
+      setDescription(response.data?.description);
+      setLabels(response.data?.labels);
+      setDatetime(response.data?.datetime);
+      //setLocation(response.data?.location);
+      setRating(response.data?.rating);
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
   const saveComment = async (post_id) => {
     try {
       await axios.post("http://localhost:4040/comments/newcomment", {
@@ -394,7 +412,9 @@ function Blog({ owner }) {
               <div className="flex">
                 <h4>{post.caption}</h4>
                 <div className="flex">
-                  <p className="post-icon">✎</p>
+                  <p className="post-icon" onClick={() => editPost(post._id)}>
+                    ✎
+                  </p>
                   <p className="post-icon">✖</p>
                 </div>
               </div>

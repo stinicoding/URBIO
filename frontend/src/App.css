@@ -54,6 +54,10 @@ button {
     border-color: white;
 }
 
+#home {
+    text-decoration: none;
+}
+
 #button-mui {
     color: #4e7ce6;
     border: 1px solid #4e7ce6;

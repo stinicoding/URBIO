@@ -46,7 +46,19 @@ const displayPosts = async (req, res) => {
   }
 };
 
+const getPost = async (req, res) => {
+  const {post_id} = req.params
+  console.log(post_id)
+  try {
+    const post = await Posts.findById({_id: post_id})
+    res.send({ok: true, data: post})
+  } catch (error) {
+    res.send({ok: false, message: error})
+  }
+}
+
 module.exports = {
   savePost,
   displayPosts,
+  getPost
 };

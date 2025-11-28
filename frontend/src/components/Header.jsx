@@ -7,7 +7,7 @@ function Header({ isLoggedIn }) {
     <div className="flex header-background">
       <div className="flex">
         <img className="logo" src={Logo_Pigeon} alt="URBIO-Logo" />
-        <h1>URBIO</h1>
+        <NavLink id="home" to={"/"}><h1>URBIO</h1></NavLink>
       </div>
       {
       isLoggedIn ? (
