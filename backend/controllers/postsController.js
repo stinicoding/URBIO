@@ -59,7 +59,7 @@ const getPost = async (req, res) => {
 
 const updatePost = async (req, res) => {
   const {
-    owner,
+    post_id,
     caption,
     description,
     labels,
@@ -68,12 +68,11 @@ const updatePost = async (req, res) => {
     picture,
     rating,
   } = req.body;
-  console.log(caption);
+  console.log(`post_id: ${post_id} `);
   try {
-    const post = await Posts.updateOne(
+    const post = await Posts.findByIdAndUpdate(
       { _id: post_id },
       {
-        owner: owner,
         caption: caption,
         description: description,
         labels: labels,

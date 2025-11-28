@@ -71,6 +71,7 @@ function Blog({ owner }) {
   const [showComments, setShowComments] = useState(false);
   const [allPosts, setAllPosts] = useState([]);
   const [update, setUpdate] = useState(false);
+  const [postId, setPostId] = useState("");
 
   //console.log(datetime.format())
   //console.log(allPosts); //outside of the function so the state is updated
@@ -138,14 +139,17 @@ function Blog({ owner }) {
       setLocation(res?.location);
       setRating(res?.rating);
       setUpdate(true);
+      setPostId(post_id);
     } catch (error) {
       console.log(error);
     }
   };
 
-  const updatePost = async () => {
+  const updatePost = async (post_id) => {
+    post_id;
     try {
       await axios.patch("http://localhost:4040/posts/updatepost", {
+        post_id: post_id,
         caption: caption,
         description: description,
         labels: labels,
@@ -154,6 +158,7 @@ function Blog({ owner }) {
         picture: "test",
         rating: rating,
       });
+      await displayPosts();
     } catch (error) {
       console.log(error);
     }
@@ -188,7 +193,7 @@ function Blog({ owner }) {
     event.preventDefault();
     handleClose();
     if (update) {
-      updatePost();
+      updatePost(postId);
     } else {
       savePost();
     }
