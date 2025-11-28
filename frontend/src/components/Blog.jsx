@@ -75,20 +75,6 @@ function Blog({ owner }) {
   //console.log(allPosts); //outside of the function so the state is updated
   //console.log(comments);
 
-  const displayPosts = async () => {
-    try {
-      //post function, because get will pass the email in the url
-      const response = await axios.post(
-        `http://localhost:4040/posts/getposts`,
-        { owner: owner }
-      );
-      //console.log(response.data.data);
-      setAllPosts(response.data.data);
-    } catch (error) {
-      console.log(error);
-    }
-  };
-
   const handleClickOpen = () => {
     setOpen(true);
   };
@@ -117,6 +103,20 @@ function Blog({ owner }) {
         rating: rating,
         comments: comments,
       });
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
+  const displayPosts = async () => {
+    try {
+      //post function, because get will pass the email in the url
+      const response = await axios.post(
+        `http://localhost:4040/posts/getposts`,
+        { owner: owner }
+      );
+      //console.log(response.data.data);
+      setAllPosts(response.data.data);
     } catch (error) {
       console.log(error);
     }
@@ -210,7 +210,7 @@ function Blog({ owner }) {
               variant="outlined"
               onClick={handleClickOpen}
             >
-              + New Blog Post
+              ✚ New Blog Post
             </Button>
           </div>
           <Dialog
@@ -365,6 +365,10 @@ function Blog({ owner }) {
                         <div key={index} className="comment">
                           <p className="comment-owner">{`${com.owner}: `}</p>
                           <p>{com.comment}</p>
+                          <div className="icons">
+                            <p className="post-icon">✎</p>
+                            <p className="post-icon">✖</p>
+                          </div>
                         </div>
                       )
                   )}
@@ -387,7 +391,13 @@ function Blog({ owner }) {
               </div>
             </section>
             <section>
-              <h4>{post.caption}</h4>
+              <div className="flex">
+                <h4>{post.caption}</h4>
+                <div className="flex">
+                  <p className="post-icon">✎</p>
+                  <p className="post-icon">✖</p>
+                </div>
+              </div>
               <p>{post.description}</p>
               <div className="post-rating">
                 <p>Rating: </p>
