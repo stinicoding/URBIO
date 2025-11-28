@@ -128,13 +128,23 @@ function Blog({ owner }) {
       const response = await axios.get(
         `http://localhost:4040/posts/getpost/${post_id}`
       );
-      console.log(response.data);
-      setCaption(response.data?.caption);
-      setDescription(response.data?.description);
-      setLabels(response.data?.labels);
-      setDatetime(response.data?.datetime);
-      //setLocation(response.data?.location);
-      setRating(response.data?.rating);
+      const res = response.data.data;
+      console.log(res);
+      setCaption(res?.caption);
+      setDescription(res?.description);
+      setLabels(res?.labels);
+      setDatetime(dayjs(res?.datetime));
+      setLocation(res?.location);
+      setRating(res?.rating);
+      await axios.patch("http://localhost:4040/posts/updatepost", {
+        caption: caption,
+        description: description,
+        labels: labels,
+        datetime: datetime.format(),
+        location: location,
+        picture: "test",
+        rating: rating,
+      });
     } catch (error) {
       console.log(error);
     }
@@ -168,6 +178,7 @@ function Blog({ owner }) {
   const handleSubmit = (event) => {
     event.preventDefault();
     handleClose();
+    
     savePost();
   };
 
@@ -337,7 +348,7 @@ function Blog({ owner }) {
                 type="submit"
                 form="subscription-form"
               >
-                POST
+                SAVE
               </Button>
             </DialogActions>
           </Dialog>

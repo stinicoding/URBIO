@@ -47,18 +47,51 @@ const displayPosts = async (req, res) => {
 };
 
 const getPost = async (req, res) => {
-  const {post_id} = req.params
-  console.log(post_id)
+  const { post_id } = req.params;
+  console.log(post_id);
   try {
-    const post = await Posts.findById({_id: post_id})
-    res.send({ok: true, data: post})
+    const post = await Posts.findById({ _id: post_id });
+    res.send({ ok: true, data: post });
   } catch (error) {
-    res.send({ok: false, message: error})
+    res.send({ ok: false, message: error });
   }
-}
+};
+
+const updatePost = async (req, res) => {
+  const {
+    owner,
+    caption,
+    description,
+    labels,
+    datetime,
+    location,
+    picture,
+    rating,
+  } = req.body;
+  console.log(caption);
+  try {
+    const post = await Posts.updateOne(
+      { _id: post_id },
+      {
+        owner: owner,
+        caption: caption,
+        description: description,
+        labels: labels,
+        datetime: datetime,
+        location: location,
+        picture: picture,
+        rating: rating,
+      }
+    );
+    res.send({ ok: true, data: post });
+  } catch (error) {
+    res.send({ ok: false, message: error });
+  }
+};
 
 module.exports = {
   savePost,
   displayPosts,
-  getPost
+  getPost,
+  updatePost,
 };
