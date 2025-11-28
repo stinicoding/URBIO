@@ -23,5 +23,6 @@ app.use(require("cors")());
 //==========================================================================
 app.use("/users", require("./routes/users.js"));
 app.use("/posts", require("./routes/posts.js"));
+app.use("/comments", require("./routes/comments.js"));
 //==========================================================================
 app.listen(port, () => console.log("🚀 Listening on port: " + port + " 🚀"));

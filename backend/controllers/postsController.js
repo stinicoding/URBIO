@@ -2,8 +2,17 @@ const Posts = require("../models/Posts.js");
 const Users = require("../models/Users.js");
 
 const savePost = async (req, res) => {
-  const { owner, caption, description, labels, datetime, location, picture, rating, comments } =
-    req.body;
+  const {
+    owner,
+    caption,
+    description,
+    labels,
+    datetime,
+    location,
+    picture,
+    rating,
+    comments,
+  } = req.body;
   try {
     const newPost = {
       owner: owner,
@@ -14,7 +23,7 @@ const savePost = async (req, res) => {
       location: location,
       picture: picture,
       rating: rating,
-      comments: comments
+      comments: comments,
     };
     //save post
     const posting = await Posts.create(newPost);
@@ -27,29 +36,17 @@ const savePost = async (req, res) => {
 
 const displayPosts = async (req, res) => {
   const { owner } = req.body;
-  console.log(owner)
+  //console.log(owner);
   try {
-    const postings = await Posts.find({owner: owner}).sort({ datetime: -1 });
+    const postings = await Posts.find({ owner: owner }).sort({ datetime: -1 });
     //console.log(postings)
-    res.send({ok: true, data: postings})
-  } catch(error) {
-    res.send({ok: false, message: error})
+    res.send({ ok: true, data: postings });
+  } catch (error) {
+    res.send({ ok: false, message: error });
   }
-}
-
-const saveComment = async (req, res) => {
-  const { comment } = req.body;
-  console.log(comment)
-  try {
-    //const com = await Posts.({})
-    //res.send({ok: true, data: com})
-  } catch(error) {
-    res.send({ok: false, message: error})
-  }
-}
+};
 
 module.exports = {
   savePost,
   displayPosts,
-  saveComment
 };

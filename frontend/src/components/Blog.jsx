@@ -66,11 +66,13 @@ function Blog({ owner }) {
   const [suggestion, setSuggestion] = useState([]);
   const [showSuggestion, setShowSuggestion] = useState(false);
   const [rating, setRating] = useState(0);
+  const [comment, setComment] = useState("");
   const [comments, setComments] = useState([]);
   const [allPosts, setAllPosts] = useState([]);
 
   //console.log(datetime.format())
   //console.log(allPosts); //outside of the function so the state is updated
+  //console.log(comments);
 
   const displayPosts = async () => {
     try {
@@ -86,29 +88,24 @@ function Blog({ owner }) {
     }
   };
 
-  useEffect(() => {
-    displayPosts();
-  }, []);
-  //without the [] it will run everytime any state updates, with the empty [] it runs once
-
   const handleClickOpen = () => {
     setOpen(true);
   };
 
   const handleClose = () => {
     setOpen(false);
-    setCaption("")
-    setDescription("")
-    setLabels([])
-    setDatetime(dayjs())
-    setLocation("")
-    setSuggestion([])
-    setRating(0)
+    setCaption("");
+    setDescription("");
+    setLabels([]);
+    setDatetime(dayjs());
+    setLocation("");
+    setSuggestion([]);
+    setRating(0);
   };
 
   const savePost = async () => {
     try {
-      const response = await axios.post("http://localhost:4040/posts/newpost", {
+      await axios.post("http://localhost:4040/posts/newpost", {
         owner: owner,
         caption: caption,
         description: description,
@@ -119,30 +116,35 @@ function Blog({ owner }) {
         rating: rating,
         comments: comments,
       });
-      console.log(response);
     } catch (error) {
       console.log(error);
     }
   };
 
-  /*
-  const saveComment = async (post_id, comment) => {
+  const saveComment = async (post_id) => {
     try {
-      const response = await axios.post(
-        "http://localhost:4040/posts/newcomment",
-        {
-          id: post_id,
-          comment: comment,
-        }
-      );
-      console.log(response);
-      
+      await axios.post("http://localhost:4040/comments/newcomment", {
+        post_id: post_id,
+        owner: owner,
+        comment: comment,
+      });
+      setComment("");
     } catch (error) {
       console.log(error);
     }
-  };*/
+  };
 
-  //onClick={saveComment(ele._id)}
+  const displayComments = async (post_id) => {
+    try {
+      const response = await axios.post(
+        `http://localhost:4040/comments/${post_id}`
+      );
+      //console.log(response.data.data);
+      setComments(response.data.data);
+    } catch (error) {
+      console.log(error);
+    }
+  };
 
   const handleSubmit = (event) => {
     event.preventDefault();
@@ -161,10 +163,6 @@ function Blog({ owner }) {
     },
   };
 
-  useEffect(() => {
-    findPlace();
-  }, [location]);
-
   const findPlace = async () => {
     if (location.length < 3) {
       setShowSuggestion(false);
@@ -178,6 +176,19 @@ function Blog({ owner }) {
       console.log(error);
     }
   };
+
+  useEffect(() => {
+    displayPosts();
+    if (allPosts.length > 0) {
+      allPosts.forEach((post) => {
+        displayComments(post._id);
+      });
+    }
+  }, []); //without the [] it will run everytime any state updates, with the empty [] it runs once
+
+  useEffect(() => {
+    findPlace();
+  }, [location]);
 
   return (
     <>
@@ -312,37 +323,52 @@ function Blog({ owner }) {
       </div>
       {allPosts.map(
         (
-          ele //map without {} or return to actually render the posts
+          post //map without {} or return to actually render the posts
         ) => (
-          <div key={ele._id} className="post-grid">
+          <div key={post._id} className="post-grid">
             <section>
               <div className="post-info">
                 <div className="post-info">
                   <img className="icon-profile" src={Profile} alt="Profile" />
-                  <h4 className="post-location">{ele.location}</h4>
+                  <h4 className="post-location">{post.location}</h4>
                 </div>
-                <p>{dayjs(ele.datetime).format("MMMM D, YYYY h:mm A")}</p>
+                <p>{dayjs(post.datetime).format("MMMM D, YYYY h:mm A")}</p>
               </div>
               <img className="post-img" src={Barcelona_splash} />
               <div className="post-labels">
-                {ele.labels?.map((lab, idx) => (
+                {post.labels?.map((lab, idx) => (
                   <button key={idx} className="post-label">
                     {lab}
                   </button>
                 ))}
               </div>
               <div className="post-box">
-                <p>Comments</p>
-                {ele.comments?.map((com) => (
-                  <p className="comment">{com}</p>
-                ))}
-                <input type="text" />
-                <button className="button-blue">Comment</button>
+                {comments?.map(
+                  (com) =>
+                    com.post_id == post._id && (
+                      <p className="comment">{com.comment}</p>
+                    )
+                )}
+                <input
+                  type="text"
+                  placeholder="Add a comment"
+                  value={comment}
+                  onChange={(e) => setComment(e.target.value)}
+                />
+                <button
+                  className="button-blue"
+                  onClick={() => {
+                    saveComment(post._id);
+                    displayComments(post._id);
+                  }}
+                >
+                  SEND
+                </button>
               </div>
             </section>
             <section>
-              <h4>{ele.caption}</h4>
-              <p>{ele.description}</p>
+              <h4>{post.caption}</h4>
+              <p>{post.description}</p>
               <div className="post-rating">
                 <p>Rating: </p>
                 <Rating
@@ -352,7 +378,9 @@ function Blog({ owner }) {
                   sx={{ fontSize: 18 }}
                 />
               </div>
-              <p>Posted: {dayjs(ele.datetime).format("MMMM D, YYYY h:mm A")}</p>
+              <p>
+                Posted: {dayjs(post.datetime).format("MMMM D, YYYY h:mm A")}
+              </p>
             </section>
           </div>
         )
