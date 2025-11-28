@@ -70,6 +70,7 @@ function Blog({ owner }) {
   const [comments, setComments] = useState([]);
   const [showComments, setShowComments] = useState(false);
   const [allPosts, setAllPosts] = useState([]);
+  const [update, setUpdate] = useState(false);
 
   //console.log(datetime.format())
   //console.log(allPosts); //outside of the function so the state is updated
@@ -136,6 +137,14 @@ function Blog({ owner }) {
       setDatetime(dayjs(res?.datetime));
       setLocation(res?.location);
       setRating(res?.rating);
+      setUpdate(true);
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
+  const updatePost = async () => {
+    try {
       await axios.patch("http://localhost:4040/posts/updatepost", {
         caption: caption,
         description: description,
@@ -178,8 +187,11 @@ function Blog({ owner }) {
   const handleSubmit = (event) => {
     event.preventDefault();
     handleClose();
-    
-    savePost();
+    if (update) {
+      updatePost();
+    } else {
+      savePost();
+    }
   };
 
   const options = {
