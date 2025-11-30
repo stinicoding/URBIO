@@ -15,6 +15,7 @@ import {
   List,
   ListItem,
   Rating,
+  Snackbar,
 } from "@mui/material";
 import {
   LocalizationProvider,
@@ -72,6 +73,7 @@ function Blog({ owner }) {
   const [allPosts, setAllPosts] = useState([]);
   const [update, setUpdate] = useState(false);
   const [postId, setPostId] = useState("");
+  const [alert, setAlert] = useState(false);
 
   //console.log(datetime.format())
   //console.log(allPosts); //outside of the function so the state is updated
@@ -159,6 +161,23 @@ function Blog({ owner }) {
         rating: rating,
       });
       await displayPosts();
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
+  const deletePost = async (post_id) => {
+    //console.log(post_id)
+    try {
+      const response = await axios.delete(
+        `http://localhost:4040/posts/deletepost/${post_id}`
+      );
+      console.log(response.data.data);
+      setAlert(true);
+      setTimeout(() => {
+        displayPosts();
+        setAlert(false);
+      }, 2500);
     } catch (error) {
       console.log(error);
     }
@@ -443,7 +462,17 @@ function Blog({ owner }) {
                   <p className="post-icon" onClick={() => editPost(post._id)}>
                     ✎
                   </p>
-                  <p className="post-icon">✖</p>
+                  <p className="post-icon" onClick={() => deletePost(post._id)}>
+                    ✖
+                  </p>
+                  {alert && (
+                    <div>
+                      <Snackbar
+                        open={alert}
+                        message="Post successfully deleted"
+                      />
+                    </div>
+                  )}
                 </div>
               </div>
               <p>{post.description}</p>
