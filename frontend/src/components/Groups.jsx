@@ -3,7 +3,7 @@ import Barcelona_splash from "../pictures/Barcelona_splash.jpg";
 import axios from "axios";
 
 import { useState, useEffect } from "react";
-import { Button, Rating } from "@mui/material";
+import { Button, Rating, TextField, List, ListItem } from "@mui/material";
 import dayjs from "dayjs"; //npm install @mui/x-date-pickers dayjs
 
 const labelOptions = [
@@ -41,13 +41,16 @@ const labelOptions = [
 
 function Groups({ owner }) {
   const [allPosts, setAllPosts] = useState([]);
-  const [filteredPosts, setFilteredPosts] = useState([]);
+  const [filteredPosts, setFilteredPosts] = useState(allPosts);
   const [myLabels, setMyLabels] = useState([]);
   const [recLabels, setRecLabels] = useState([]);
   const [activeLabels, setActiveLabels] = useState([]);
   const [comment, setComment] = useState("");
   const [comments, setComments] = useState([]);
   const [showComments, setShowComments] = useState(false);
+  const [location, setLocation] = useState("");
+  const [suggestion, setSuggestion] = useState([]);
+  const [showSuggestion, setShowSuggestion] = useState(false);
 
   //console.log(myLabels);
   //console.log(recLabels);
@@ -92,20 +95,27 @@ function Groups({ owner }) {
       );
       //console.log(response.data.data);
       setAllPosts(response.data.data);
+      setFilteredPosts(response.data.data);
     } catch (error) {
       console.log(error);
     }
   };
 
   const filterPosts = () => {
-    if (activeLabels.length === 0) {
-      setFilteredPosts(allPosts);
+    let filtered = allPosts;
+    if (activeLabels.length === 0 && location.length === 0) {
       return;
     }
-    const filtered = allPosts.filter((post) =>
-      activeLabels.every((label) => post.labels.includes(label))
-    );
-
+    if (activeLabels.length > 0) {
+      filtered = filtered.filter((post) =>
+        activeLabels.every((label) => post.labels.includes(label))
+      );
+    }
+    if (location.length > 0) {
+      filtered = filtered.filter((post) =>
+        post.location.toLowerCase().includes(location.toLowerCase())
+      );
+    }
     setFilteredPosts(filtered);
   };
 
@@ -116,6 +126,31 @@ function Groups({ owner }) {
       );
       //console.log(response.data.data);
       setComments(response.data.data);
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
+  const options = {
+    method: "GET",
+    url: "https://google-place-autocomplete-and-place-info.p.rapidapi.com/maps/api/place/autocomplete/json",
+    params: { input: location },
+    headers: {
+      "x-rapidapi-key": "fc45359ecbmsh5392bafe7eb6944p19da2ajsn49e3444210af",
+      "x-rapidapi-host":
+        "google-place-autocomplete-and-place-info.p.rapidapi.com",
+    },
+  };
+
+  const findPlace = async () => {
+    if (location.length < 3) {
+      setShowSuggestion(false);
+      return;
+    }
+    try {
+      const response = await axios.request(options);
+      setSuggestion(response.data.predictions);
+      //console.log(response.data.predictions)
     } catch (error) {
       console.log(error);
     }
@@ -137,47 +172,77 @@ function Groups({ owner }) {
 
   useEffect(() => {
     filterPosts();
-  }, [activeLabels, allPosts]);
+  }, [activeLabels, location, allPosts]);
+
+  useEffect(() => {
+    findPlace();
+  }, [location]);
 
   return (
     <>
       <h3>My Interest Groups</h3>
-      <div>
-        <h4>My Interest Groups</h4>
+      <div className="groups-grid">
         <div>
-          {myLabels.map((label) => (
-            <Button
-              key={label}
-              className={
-                activeLabels.includes(label)
-                  ? "button-mui-activated"
-                  : "button-mui"
-              }
-              variant="outlined"
-              onClick={() => toggleLabel(label)}
-            >
-              {label}
-            </Button>
-          ))}
+          <TextField
+            className="white-background"
+            value={location}
+            onChange={(e) => {
+              setLocation(e.target.value);
+              setShowSuggestion(true);
+            }}
+            label="Location"
+          />
+          <List>
+            {showSuggestion &&
+              suggestion?.map((s) => (
+                <ListItem
+                  className="white-background"
+                  onClick={() => {
+                    setLocation(s.description);
+                    setShowSuggestion(false);
+                  }}
+                  key={s.place_id}
+                >
+                  {s.description}
+                </ListItem>
+              ))}
+          </List>
         </div>
-      </div>
-      <div>
-        <h4>More Interest Groups</h4>
         <div>
-          {recLabels.map((label) => (
-            <Button
-              key={label}
-              className={
-                activeLabels.includes(label)
-                  ? "button-mui-activated"
-                  : "button-mui"
-              }
-              variant="outlined"
-              onClick={() => toggleLabel(label)}
-            >
-              {label}
-            </Button>
-          ))}
+          <div>
+            {myLabels.map((label) => (
+              <Button
+                key={label}
+                className={
+                  activeLabels.includes(label)
+                    ? "button-mui-activated"
+                    : "button-mui"
+                }
+                variant="outlined"
+                onClick={() => toggleLabel(label)}
+              >
+                {label}
+              </Button>
+            ))}
+          </div>
+        </div>
+        <div>
+          <div>
+            {recLabels.map((label) => (
+              <Button
+                key={label}
+                className={
+                  activeLabels.includes(label)
+                    ? "button-mui-activated"
+                    : "button-mui"
+                }
+                variant="outlined"
+                onClick={() => toggleLabel(label)}
+              >
+                {label}
+              </Button>
+            ))}
+          </div>
         </div>
       </div>
       <div>

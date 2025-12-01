@@ -214,6 +214,11 @@ button {
     grid-template-columns: repeat(3, 1fr);
 }
 
+.groups-grid {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+}
+
 .screen {
     height: 100vh;
 
@@ -329,4 +334,9 @@ button {
     padding-right: 10px;
     gap: 10px;
 
+}
+
+.white-background {
+    background-color: white;
+    border-radius: 4px;
 }
