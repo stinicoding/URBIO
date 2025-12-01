@@ -10,6 +10,7 @@ import Trending from "./components/Trending";
 import Login from "./components/Login";
 import Register from "./components/Register";
 import Blog from "./components/Blog";
+import Groups from "./components/Groups";
 
 function App() {
   const [isLoggedIn, setIsLoggedIn] = useState(false);
@@ -53,7 +54,8 @@ function App() {
           <Route path="/register" element={<Register />} />
           <Route path="/login" element={<Login login={login} />} />
           <Route path="/trending" element={<Trending />} />
-          <Route path="/blog" element={<Blog owner={user.email}/>} />
+          <Route path="/blog" element={<Blog owner={user.email} />} />
+          <Route path="/groups" element={<Groups owner={user.email} />} />
         </Routes>
         <Footer />
       </Router>

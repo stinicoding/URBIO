@@ -271,7 +271,7 @@ function Blog({ owner }) {
         <Fragment>
           <div className="center">
             <Button
-              id="button-mui"
+              className="button-mui"
               variant="outlined"
               onClick={handleClickOpen}
             >

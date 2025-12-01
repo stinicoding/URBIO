@@ -58,18 +58,6 @@ button {
     text-decoration: none;
 }
 
-#button-mui {
-    color: #4e7ce6;
-    border: 1px solid #4e7ce6;
-    background-color: white;
-}
-
-#button-mui:hover {
-    color: white;
-    border: 1px solid white;
-    background-color: #4e7ce6;
-}
-
 #rating-mui {
     color: #E86B92;
     font-size: 18px;
@@ -112,6 +100,24 @@ button {
     color: white;
     background-color: #E86B92;
     cursor: pointer;
+}
+
+.button-mui {
+    color: #4e7ce6 !important;
+    border: 1px solid #4e7ce6 !important;
+    background-color: white !important;
+}
+
+.button-mui:hover {
+    color: white !important;
+    border: 1px solid white !important;
+    background-color: #4e7ce6 !important;
+}
+
+.button-mui-activated {
+    color: white !important;
+    border: 1px solid white !important;
+    background-color: #4e7ce6 !important;
 }
 
 .button-categories {
@@ -276,6 +282,7 @@ button {
     background-color: #E86B92;
     border-radius: 5px;
     border-color: white;
+    cursor: pointer;
 }
 
 .post-labels {

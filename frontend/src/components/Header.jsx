@@ -14,7 +14,7 @@ function Header({ isLoggedIn }) {
         <div className="flex">
           <NavLink className="button-nav" to={"/blog"}>MyBlog</NavLink>
           <NavLink className="button-nav">Friends</NavLink>
-          <NavLink className="button-nav">Groups</NavLink>
+          <NavLink className="button-nav" to={"/groups"}>Groups</NavLink>
           <NavLink className="button-nav">Events</NavLink>
           <img className="icon-profile" src={Profile} alt="Profile"/>
         </div>
