@@ -6,6 +6,34 @@ import { useState, useEffect } from "react";
 import { Button, Rating, TextField, List, ListItem } from "@mui/material";
 import dayjs from "dayjs"; //npm install @mui/x-date-pickers dayjs
 
+import { useTheme } from "@mui/material/styles";
+import Box from "@mui/material/Box";
+import OutlinedInput from "@mui/material/OutlinedInput";
+import InputLabel from "@mui/material/InputLabel";
+import MenuItem from "@mui/material/MenuItem";
+import FormControl from "@mui/material/FormControl";
+import Select from "@mui/material/Select";
+import Chip from "@mui/material/Chip";
+
+const ITEM_HEIGHT = 48;
+const ITEM_PADDING_TOP = 8;
+const MenuProps = {
+  PaperProps: {
+    style: {
+      maxHeight: ITEM_HEIGHT * 4.5 + ITEM_PADDING_TOP,
+      width: 250,
+    },
+  },
+};
+
+function getStyles(label, myLabels, theme) {
+  return {
+    fontWeight: myLabels.includes(label)
+      ? theme.typography.fontWeightMedium
+      : theme.typography.fontWeightRegular,
+  };
+}
+
 const labelOptions = [
   "Pet-friendly",
   "Vegan",
@@ -51,27 +79,28 @@ function Groups({ owner }) {
   const [location, setLocation] = useState("");
   const [suggestion, setSuggestion] = useState([]);
   const [showSuggestion, setShowSuggestion] = useState(false);
+  const theme = useTheme();
 
   //console.log(myLabels);
   //console.log(recLabels);
   //console.log(activeLabels);
 
+  //set recommended Labels (that are not included in my Labels)
   const displayRecLabels = async () => {
     try {
-      const labels = await setRecLabels(labelOptions);
-      //console.log(labels);
+      const rec = labelOptions.filter((label) => !myLabels.includes(label));
+      setRecLabels(rec);
+      //console.log(rec);
     } catch (error) {
       console.log(error);
     }
   };
 
-  const displayMyLabels = async () => {
-    try {
-      const labels = await setMyLabels(labelOptions);
-      //console.log(labels);
-    } catch (error) {
-      console.log(error);
-    }
+  const handleChange = (event) => {
+    const {
+      target: { value },
+    } = event;
+    setMyLabels(typeof value === "string" ? value.split(",") : value);
   };
 
   const toggleLabel = (label) => {
@@ -157,7 +186,13 @@ function Groups({ owner }) {
   };
 
   useEffect(() => {
-    displayMyLabels();
+    setMyLabels([
+      "Pet-friendly",
+      "Vegan",
+      "Vegetarian",
+      "Gluten-free",
+      "Romantic",
+    ]); //for testing
     displayRecLabels();
     displayPosts();
   }, []); //without the [] it will run everytime any state updates, with the empty [] it runs once
@@ -177,6 +212,10 @@ function Groups({ owner }) {
   useEffect(() => {
     findPlace();
   }, [location]);
+
+  useEffect(() => {
+    displayRecLabels();
+  }, [myLabels]);
 
   return (
     <>
@@ -207,6 +246,37 @@ function Groups({ owner }) {
                 </ListItem>
               ))}
           </List>
+        </div>
+        <div>
+          <FormControl sx={{ m: 1, width: 300 }}>
+            <InputLabel id="demo-multiple-chip-label">Chip</InputLabel>
+            <Select
+              labelId="demo-multiple-chip-label"
+              id="demo-multiple-chip"
+              multiple
+              value={myLabels}
+              onChange={handleChange}
+              input={<OutlinedInput id="select-multiple-chip" label="Chip" />}
+              renderValue={(selected) => (
+                <Box sx={{ display: "flex", flexWrap: "wrap", gap: 0.5 }}>
+                  {selected.map((value) => (
+                    <Chip key={value} label={value} />
+                  ))}
+                </Box>
+              )}
+              MenuProps={MenuProps}
+            >
+              {myLabels.map((label) => (
+                <MenuItem
+                  key={label}
+                  value={label}
+                  style={getStyles(label, myLabels, theme)}
+                >
+                  {label}
+                </MenuItem>
+              ))}
+            </Select>
+          </FormControl>
         </div>
         <div>
           <div>
