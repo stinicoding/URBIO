@@ -58,9 +58,15 @@ button {
     text-decoration: none;
 }
 
-#rating-mui {
-    color: #E86B92;
-    font-size: 18px;
+.rating-mui {
+    color: #E86B92 !important;
+    font-size: 18px !important;
+}
+
+.rating-filter {
+    color: #E86B92 !important;
+    font-size: 18px !important;
+    margin-bottom: 20px;
 }
 
 .center {
@@ -209,6 +215,13 @@ button {
     border-radius: 5px;
 }
 
+.city-card {
+    background-color: #ffffffcf;
+    padding: 20px;
+    margin: 20px;
+    border-radius: 10px;
+}
+
 .grid {
     display: grid;
     grid-template-columns: repeat(3, 1fr);
@@ -216,7 +229,9 @@ button {
 
 .groups-grid {
     display: grid;
-    grid-template-columns: repeat(4, 1fr);
+    grid-template-columns: 1fr 2fr 3fr;
+    align-items: top;
+    margin: 20px;
 }
 
 .screen {
@@ -243,7 +258,7 @@ button {
 .post-grid {
     display: grid;
     grid-template-columns: repeat(2, 1fr);
-    background-color: white;
+    background-color: #ffffffcf;
     padding: 20px;
     margin: 20px;
     gap: 20px;
@@ -337,6 +352,10 @@ button {
 }
 
 .white-background {
-    background-color: white;
+    background-color: #ffffffcf;
     border-radius: 4px;
+}
+
+.results {
+    margin: 20px;
 }

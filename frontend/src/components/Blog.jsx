@@ -1,6 +1,8 @@
 import Profile from "../pictures/Profile.png";
 import Barcelona_splash from "../pictures/Barcelona_splash.jpg";
 import axios from "axios";
+import renderComments from "../utils/renderComments";
+import labelOptions from "../data/labelOptions";
 
 import { useState, useEffect, Fragment } from "react";
 import {
@@ -23,39 +25,6 @@ import {
 } from "@mui/x-date-pickers";
 import { AdapterDayjs } from "@mui/x-date-pickers/AdapterDayjs";
 import dayjs from "dayjs"; //npm install @mui/x-date-pickers dayjs
-
-const labelOptions = [
-  "Pet-friendly",
-  "Vegan",
-  "Vegetarian",
-  "Gluten-free",
-  "Romantic",
-  "Budget-friendly",
-  "Luxury",
-  "Family-friendly",
-  "Nightlife",
-  "Beach",
-  "Viewpoint",
-  "Sightseeing",
-  "Architecture",
-  "Historic",
-  "Cultural",
-  "Local Favorite",
-  "Outdoor",
-  "Hiking",
-  "Nature",
-  "Hidden Gem",
-  "Popular",
-  "Modern",
-  "Art",
-  "Photography Spot",
-  "Shopping",
-  "Foodie",
-  "Traditional",
-  "Relaxing",
-  "Scenic Route",
-  "Rainy-day Activity",
-];
 
 function Blog({ owner }) {
   const [open, setOpen] = useState(false);
@@ -133,7 +102,7 @@ function Blog({ owner }) {
         `http://localhost:4040/posts/getpost/${post_id}`
       );
       const res = response.data.data;
-      console.log(res);
+      //console.log(res);
       setCaption(res?.caption);
       setDescription(res?.description);
       setLabels(res?.labels);
@@ -148,7 +117,6 @@ function Blog({ owner }) {
   };
 
   const updatePost = async (post_id) => {
-    post_id;
     try {
       await axios.patch("http://localhost:4040/posts/updatepost", {
         post_id: post_id,
@@ -371,6 +339,7 @@ function Blog({ owner }) {
                     ))}
                 </List>
                 <Rating
+                  className="rating-mui"
                   name="simple-controlled"
                   value={rating}
                   onChange={(event, newValue) => setRating(newValue)}
@@ -423,20 +392,7 @@ function Blog({ owner }) {
                 >
                   {showComments ? "Hide Comments" : "Show Comments"}
                 </p>
-                {showComments &&
-                  comments?.map(
-                    (com, index) =>
-                      com.post_id == post._id && (
-                        <div key={index} className="comment">
-                          <p className="comment-owner">{`${com.owner}: `}</p>
-                          <p>{com.comment}</p>
-                          <div className="icons">
-                            <p className="post-icon">✎</p>
-                            <p className="post-icon">✖</p>
-                          </div>
-                        </div>
-                      )
-                  )}
+                {showComments && renderComments(comments, post)}
                 <input
                   type="text"
                   placeholder="Add a comment"
@@ -479,7 +435,7 @@ function Blog({ owner }) {
               <div className="post-rating">
                 <p>Rating: </p>
                 <Rating
-                  id="rating-mui"
+                  className="rating-mui"
                   name="simple-controlled"
                   value={post.rating}
                   readOnly

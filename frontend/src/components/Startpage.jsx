@@ -23,7 +23,7 @@ function Startpage() {
       </section>
       <section className="grid">
         {cities.map((ele) => (
-          <article key={ele.name}>
+          <article key={ele.name} className="city-card">
             <div className="city-article">
               <img className="city-picture" src={ele.img} />
             </div>

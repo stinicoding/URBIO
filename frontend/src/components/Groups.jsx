@@ -1,19 +1,25 @@
 import Profile from "../pictures/Profile.png";
 import Barcelona_splash from "../pictures/Barcelona_splash.jpg";
 import axios from "axios";
+import renderComments from "../utils/renderComments";
+import labelOptions from "../data/labelOptions";
 
 import { useState, useEffect } from "react";
-import { Button, Rating, TextField, List, ListItem } from "@mui/material";
+import {
+  Rating,
+  TextField,
+  List,
+  ListItem,
+  Box,
+  OutlinedInput,
+  InputLabel,
+  MenuItem,
+  FormControl,
+  Select,
+  Chip,
+  useTheme,
+} from "@mui/material";
 import dayjs from "dayjs"; //npm install @mui/x-date-pickers dayjs
-
-import { useTheme } from "@mui/material/styles";
-import Box from "@mui/material/Box";
-import OutlinedInput from "@mui/material/OutlinedInput";
-import InputLabel from "@mui/material/InputLabel";
-import MenuItem from "@mui/material/MenuItem";
-import FormControl from "@mui/material/FormControl";
-import Select from "@mui/material/Select";
-import Chip from "@mui/material/Chip";
 
 const ITEM_HEIGHT = 48;
 const ITEM_PADDING_TOP = 8;
@@ -34,39 +40,6 @@ function getStyles(label, myLabels, theme) {
   };
 }
 
-const labelOptions = [
-  "Pet-friendly",
-  "Vegan",
-  "Vegetarian",
-  "Gluten-free",
-  "Romantic",
-  "Budget-friendly",
-  "Luxury",
-  "Family-friendly",
-  "Nightlife",
-  "Beach",
-  "Viewpoint",
-  "Sightseeing",
-  "Architecture",
-  "Historic",
-  "Cultural",
-  "Local Favorite",
-  "Outdoor",
-  "Hiking",
-  "Nature",
-  "Hidden Gem",
-  "Popular",
-  "Modern",
-  "Art",
-  "Photography Spot",
-  "Shopping",
-  "Foodie",
-  "Traditional",
-  "Relaxing",
-  "Scenic Route",
-  "Rainy-day Activity",
-];
-
 function Groups({ owner }) {
   const [allPosts, setAllPosts] = useState([]);
   const [filteredPosts, setFilteredPosts] = useState(allPosts);
@@ -79,11 +52,15 @@ function Groups({ owner }) {
   const [location, setLocation] = useState("");
   const [suggestion, setSuggestion] = useState([]);
   const [showSuggestion, setShowSuggestion] = useState(false);
+  const [ratingFilter, setRatingFilter] = useState(null);
+  const [timeFilter, setTimeFilter] = useState("all");
   const theme = useTheme();
 
   //console.log(myLabels);
   //console.log(recLabels);
   //console.log(activeLabels);
+  //console.log(ratingFilter)
+  //console.log(timeFilter);
 
   //set recommended Labels (that are not included in my Labels)
   const displayRecLabels = async () => {
@@ -96,23 +73,18 @@ function Groups({ owner }) {
     }
   };
 
-  const handleChange = (event) => {
+  const handleChangeMyLabels = (event) => {
     const {
       target: { value },
     } = event;
     setMyLabels(typeof value === "string" ? value.split(",") : value);
   };
 
-  const toggleLabel = (label) => {
-    setActiveLabels((lab) => {
-      let updated;
-      if (lab.includes(label)) {
-        updated = lab.filter((l) => l !== label); //deactivate
-      } else {
-        updated = [...lab, label]; //activate
-      }
-      return updated;
-    });
+  const handleChangeRecLabels = (event) => {
+    const {
+      target: { value },
+    } = event;
+    setRecLabels(typeof value === "string" ? value.split(",") : value);
   };
 
   const displayPosts = async () => {
@@ -130,11 +102,9 @@ function Groups({ owner }) {
     }
   };
 
+  //filers: location, labels, rating, time
   const filterPosts = () => {
     let filtered = allPosts;
-    if (activeLabels.length === 0 && location.length === 0) {
-      return;
-    }
     if (activeLabels.length > 0) {
       filtered = filtered.filter((post) =>
         activeLabels.every((label) => post.labels.includes(label))
@@ -143,6 +113,24 @@ function Groups({ owner }) {
     if (location.length > 0) {
       filtered = filtered.filter((post) =>
         post.location.toLowerCase().includes(location.toLowerCase())
+      );
+    }
+    if (ratingFilter !== null) {
+      filtered = filtered.filter((post) => post.rating >= ratingFilter);
+    }
+    if (timeFilter !== "all") {
+      let startDate;
+      if (timeFilter === "today") {
+        startDate = dayjs().startOf("day");
+      } else if (timeFilter === "7") {
+        startDate = dayjs().subtract(7, "day");
+      } else if (timeFilter === "14") {
+        startDate = dayjs().subtract(14, "day");
+      } else if (timeFilter === "30") {
+        startDate = dayjs().subtract(1, "month");
+      }
+      filtered = filtered.filter((post) =>
+        dayjs(post.datetime).isAfter(startDate)
       );
     }
     setFilteredPosts(filtered);
@@ -207,7 +195,7 @@ function Groups({ owner }) {
 
   useEffect(() => {
     filterPosts();
-  }, [activeLabels, location, allPosts]);
+  }, [activeLabels, location, ratingFilter, timeFilter, allPosts]);
 
   useEffect(() => {
     findPlace();
@@ -246,16 +234,38 @@ function Groups({ owner }) {
                 </ListItem>
               ))}
           </List>
+          <p>Rating</p>
+          <Rating
+            className="rating-filter"
+            name="simple-controlled"
+            value={ratingFilter}
+            onChange={(event, newValue) => setRatingFilter(newValue)}
+          />
+          <FormControl fullWidth>
+            <InputLabel>Time</InputLabel>
+            <Select
+              className="white-background"
+              value={timeFilter}
+              label="Time"
+              onChange={(e) => setTimeFilter(e.target.value)}
+            >
+              <MenuItem value="today">Today</MenuItem>
+              <MenuItem value="7">Last 7 Days</MenuItem>
+              <MenuItem value="14">Last 14 Days</MenuItem>
+              <MenuItem value="30">Last Month</MenuItem>
+              <MenuItem value="all">All</MenuItem>
+            </Select>
+          </FormControl>
         </div>
         <div>
-          <FormControl sx={{ m: 1, width: 300 }}>
-            <InputLabel id="demo-multiple-chip-label">Chip</InputLabel>
+          <FormControl sx={{ m: 1 }}>
+            <InputLabel id="demo-multiple-chip-label">Groups</InputLabel>
             <Select
               labelId="demo-multiple-chip-label"
               id="demo-multiple-chip"
               multiple
               value={myLabels}
-              onChange={handleChange}
+              onChange={handleChangeMyLabels}
               input={<OutlinedInput id="select-multiple-chip" label="Chip" />}
               renderValue={(selected) => (
                 <Box sx={{ display: "flex", flexWrap: "wrap", gap: 0.5 }}>
@@ -279,42 +289,39 @@ function Groups({ owner }) {
           </FormControl>
         </div>
         <div>
-          <div>
-            {myLabels.map((label) => (
-              <Button
-                key={label}
-                className={
-                  activeLabels.includes(label)
-                    ? "button-mui-activated"
-                    : "button-mui"
-                }
-                variant="outlined"
-                onClick={() => toggleLabel(label)}
-              >
-                {label}
-              </Button>
-            ))}
-          </div>
+          <FormControl sx={{ m: 1 }}>
+            <InputLabel id="demo-multiple-chip-label">Recommended</InputLabel>
+            <Select
+              labelId="demo-multiple-chip-label"
+              id="demo-multiple-chip"
+              multiple
+              value={recLabels}
+              onChange={handleChangeRecLabels}
+              input={<OutlinedInput id="select-multiple-chip" label="Chip" />}
+              renderValue={(selected) => (
+                <Box sx={{ display: "flex", flexWrap: "wrap", gap: 0.5 }}>
+                  {selected.map((value) => (
+                    <Chip key={value} label={value} />
+                  ))}
+                </Box>
+              )}
+              MenuProps={MenuProps}
+            >
+              {recLabels.map((label) => (
+                <MenuItem
+                  key={label}
+                  value={label}
+                  style={getStyles(label, recLabels, theme)}
+                >
+                  {label}
+                </MenuItem>
+              ))}
+            </Select>
+          </FormControl>
         </div>
-        <div>
-          <div>
-            {recLabels.map((label) => (
-              <Button
-                key={label}
-                className={
-                  activeLabels.includes(label)
-                    ? "button-mui-activated"
-                    : "button-mui"
-                }
-                variant="outlined"
-                onClick={() => toggleLabel(label)}
-              >
-                {label}
-              </Button>
-            ))}
-          </div>
-        </div>
+        <div></div>
       </div>
+      <p className="results">Results: {filteredPosts.length}</p>
       <div>
         {filteredPosts.map(
           (
@@ -349,20 +356,7 @@ function Groups({ owner }) {
                   >
                     {showComments ? "Hide Comments" : "Show Comments"}
                   </p>
-                  {showComments &&
-                    comments?.map(
-                      (com, index) =>
-                        com.post_id == post._id && (
-                          <div key={index} className="comment">
-                            <p className="comment-owner">{`${com.owner}: `}</p>
-                            <p>{com.comment}</p>
-                            <div className="icons">
-                              <p className="post-icon">✎</p>
-                              <p className="post-icon">✖</p>
-                            </div>
-                          </div>
-                        )
-                    )}
+                  {showComments && renderComments(comments, post)}
                   <input
                     type="text"
                     placeholder="Add a comment"
@@ -389,7 +383,7 @@ function Groups({ owner }) {
                 <div className="post-rating">
                   <p>Rating: </p>
                   <Rating
-                    id="rating-mui"
+                    className="rating-mui"
                     name="simple-controlled"
                     value={post.rating}
                     readOnly
