@@ -1,6 +1,16 @@
 const Posts = require("../models/Posts.js");
 const Users = require("../models/Users.js");
 
+//Cloudinary for uploading pictures
+const cloudinary = require("cloudinary");
+require("dotenv").config({ path: "./.env" });
+console.log(5, process.env.API_KEY);
+cloudinary.config({
+  cloud_name: process.env.CLOUD_NAME,
+  api_key: process.env.API_KEY,
+  api_secret: process.env.API_SECRET,
+});
+
 const savePost = async (req, res) => {
   const {
     owner,
@@ -9,7 +19,7 @@ const savePost = async (req, res) => {
     labels,
     datetime,
     location,
-    picture,
+    pictures,
     rating,
     comments,
   } = req.body;
@@ -21,7 +31,7 @@ const savePost = async (req, res) => {
       labels: labels,
       datetime: datetime,
       location: location,
-      picture: picture,
+      pictures: pictures,
       rating: rating,
       comments: comments,
     };
@@ -65,7 +75,7 @@ const updatePost = async (req, res) => {
     labels,
     datetime,
     location,
-    picture,
+    pictures,
     rating,
   } = req.body;
   //console.log(`post_id: ${post_id} `);
@@ -78,7 +88,7 @@ const updatePost = async (req, res) => {
         labels: labels,
         datetime: datetime,
         location: location,
-        picture: picture,
+        pictures: pictures,
         rating: rating,
       }
     );

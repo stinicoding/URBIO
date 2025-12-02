@@ -46,7 +46,7 @@ const loginUser = async (req, res) => {
     }
     const match = bcrypt.compareSync(password, user.password);
     if (match) {
-		//jwt_secret is a private key to verify the token on the server
+      //jwt_secret is a private key to verify the token on the server
       const token = jwt.sign({ userEmail: user.email }, jwt_secret, {
         expiresIn: "365days",
       });
@@ -68,8 +68,44 @@ const verifyToken = (req, res) => {
   });
 };
 
+const uploadPicture = async (req, res) => {
+  const { files } = req.body;
+  let pictures = files.map((pic) => {
+    console.log(13, pic);
+    return {
+      public_id: pic.uploadInfo?.public_id,
+      photo_url: pic.uploadInfo?.secure_url,
+    };
+  });
+
+  try {
+    const created = await Pictures.create(pictures);
+    console.log(created);
+    res.json({ ok: true, created });
+  } catch (error) {
+    res.json({ ok: false });
+  }
+};
+
+const removePicture = async (req, res) => {
+  const { _id } = req.params;
+  try {
+    const deleted = await Pictures.findByIdAndRemove({ _id: _id });
+    if (deleted.public_id) {
+      await cloudinary.v2.api.delete_resources([deleted.public_id]);
+      res.json({ ok: true, deleted });
+    } else {
+      res.json({ ok: false });
+    }
+  } catch (error) {
+    res.json({ ok: false });
+  }
+};
+
 module.exports = {
   registerUser,
   loginUser,
   verifyToken,
+  uploadPicture,
+  removePicture,
 };

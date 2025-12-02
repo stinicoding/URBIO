@@ -1,8 +1,8 @@
 import Profile from "../pictures/Profile.png";
-import Barcelona_splash from "../pictures/Barcelona_splash.jpg";
 import axios from "axios";
 import renderComments from "../utils/renderComments";
 import labelOptions from "../data/labelOptions";
+import UploadImages from "../utils/UploadImages";
 
 import { useState, useEffect, Fragment } from "react";
 import {
@@ -21,7 +21,7 @@ import {
 } from "@mui/material";
 import {
   LocalizationProvider,
-  DateTimePicker, //combines date and time picker in one
+  DateTimePicker, //combines date and time picker
 } from "@mui/x-date-pickers";
 import { AdapterDayjs } from "@mui/x-date-pickers/AdapterDayjs";
 import dayjs from "dayjs"; //npm install @mui/x-date-pickers dayjs
@@ -31,6 +31,8 @@ function Blog({ owner }) {
   const [caption, setCaption] = useState("");
   const [description, setDescription] = useState("");
   const [labels, setLabels] = useState([]);
+  const [pictures, setPictures] = useState([]);
+  const [pictureIndex, setPictureIndex] = useState(0);
   const [datetime, setDatetime] = useState(dayjs());
   const [location, setLocation] = useState("");
   const [suggestion, setSuggestion] = useState([]);
@@ -47,6 +49,7 @@ function Blog({ owner }) {
   //console.log(datetime.format())
   //console.log(allPosts); //outside of the function so the state is updated
   //console.log(comments);
+  console.log(pictures);
 
   const handleClickOpen = () => {
     setOpen(true);
@@ -72,7 +75,7 @@ function Blog({ owner }) {
         labels: labels,
         datetime: datetime.format(),
         location: location,
-        picture: "test",
+        pictures: pictures,
         rating: rating,
         comments: comments,
       });
@@ -88,7 +91,7 @@ function Blog({ owner }) {
         `http://localhost:4040/posts/getposts`,
         { owner: owner }
       );
-      //console.log(response.data.data);
+      console.log(response.data.data);
       setAllPosts(response.data.data);
     } catch (error) {
       console.log(error);
@@ -107,6 +110,7 @@ function Blog({ owner }) {
       setDescription(res?.description);
       setLabels(res?.labels);
       setDatetime(dayjs(res?.datetime));
+      setPictures(res?.pictures);
       setLocation(res?.location);
       setRating(res?.rating);
       setUpdate(true);
@@ -125,7 +129,7 @@ function Blog({ owner }) {
         labels: labels,
         datetime: datetime.format(),
         location: location,
-        picture: "test",
+        pictures: pictures,
         rating: rating,
       });
       await displayPosts();
@@ -232,7 +236,7 @@ function Blog({ owner }) {
       <h3>MyBlog</h3>
       <div>
         {allPosts.length < 1 && (
-          <div className="screen">
+          <div>
             <h4>Create your first Post!</h4>
           </div>
         )}
@@ -245,6 +249,7 @@ function Blog({ owner }) {
             >
               ✚ New Blog Post
             </Button>
+            {allPosts.length < 1 && <div className="screen"></div>}
           </div>
           <Dialog
             open={open}
@@ -285,15 +290,10 @@ function Blog({ owner }) {
                   value={description}
                   onChange={(e) => setDescription(e.target.value)}
                 />
-                <TextField
-                  autoFocus
-                  required
-                  margin="dense"
-                  label="Upload Picture"
-                  type="file"
-                  fullWidth
-                  variant="standard"
-                />
+                <UploadImages required setPictures={setPictures} />
+                {pictures.map((pic) => (
+                  <p>{pic.url}</p>
+                ))}
                 <Autocomplete
                   multiple
                   options={labelOptions}
@@ -317,6 +317,7 @@ function Blog({ owner }) {
                   />
                 </LocalizationProvider>
                 <TextField
+                  required
                   value={location}
                   onChange={(e) => {
                     setLocation(e.target.value);
@@ -372,7 +373,21 @@ function Blog({ owner }) {
                 </div>
                 <p>{dayjs(post.datetime).format("MMMM D, YYYY h:mm A")}</p>
               </div>
-              <img className="post-img" src={Barcelona_splash} />
+              <img
+                className="post-img"
+                src={post.pictures[pictureIndex]?.url}
+              />
+              <div className="post-img-small-overview">
+                {post.pictures.map((pic, idx) => (
+                  //? before url to update only the posts with several pictures (without it the other posts would crash)
+                  <img
+                    key={pic.public_id}
+                    className="post-img-small"
+                    src={pic?.url}
+                    onClick={() => setPictureIndex(idx)}
+                  />
+                ))}
+              </div>
               <div className="post-labels">
                 {post.labels?.map((lab, idx) => (
                   <button key={idx} className="post-label">

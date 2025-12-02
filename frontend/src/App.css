@@ -293,6 +293,16 @@ button {
     margin-bottom: 20px;
 }
 
+.post-img-small-overview {
+    display: flex;
+    gap: 10px;
+}
+
+.post-img-small {
+    width: 10vw;
+    margin-bottom: 20px;
+}
+
 .post-label {
     height: 20px;
     text-align: center;

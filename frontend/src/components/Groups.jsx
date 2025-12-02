@@ -1,5 +1,4 @@
 import Profile from "../pictures/Profile.png";
-import Barcelona_splash from "../pictures/Barcelona_splash.jpg";
 import axios from "axios";
 import renderComments from "../utils/renderComments";
 import labelOptions from "../data/labelOptions";
@@ -46,6 +45,7 @@ function Groups({ owner }) {
   const [myLabels, setMyLabels] = useState([]);
   const [recLabels, setRecLabels] = useState([]);
   const [activeLabels, setActiveLabels] = useState([]);
+  const [pictureIndex, setPictureIndex] = useState(0);
   const [comment, setComment] = useState("");
   const [comments, setComments] = useState([]);
   const [showComments, setShowComments] = useState(false);
@@ -336,7 +336,21 @@ function Groups({ owner }) {
                   </div>
                   <p>{dayjs(post.datetime).format("MMMM D, YYYY h:mm A")}</p>
                 </div>
-                <img className="post-img" src={Barcelona_splash} />
+                <img
+                  className="post-img"
+                  src={post.pictures[pictureIndex]?.url}
+                />
+                <div className="post-img-small-overview">
+                  {post.pictures.map((pic, idx) => (
+                    //? before url to update only the posts with several pictures (without it the other posts would crash)
+                    <img
+                      key={pic.public_id}
+                      className="post-img-small"
+                      src={pic?.url}
+                      onClick={() => setPictureIndex(idx)}
+                    />
+                  ))}
+                </div>
                 <div className="post-labels">
                   {post.labels?.map((lab, idx) => (
                     <button key={idx} className="post-label">
