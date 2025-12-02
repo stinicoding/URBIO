@@ -32,7 +32,7 @@ function Blog({ owner }) {
   const [description, setDescription] = useState("");
   const [labels, setLabels] = useState([]);
   const [pictures, setPictures] = useState([]);
-  const [pictureIndex, setPictureIndex] = useState(0);
+  const [pictureIndex, setPictureIndex] = useState({});
   const [datetime, setDatetime] = useState(dayjs());
   const [location, setLocation] = useState("");
   const [suggestion, setSuggestion] = useState([]);
@@ -92,11 +92,22 @@ function Blog({ owner }) {
         { owner: owner }
       );
       console.log(response.data.data);
-      setAllPosts(response.data.data);
+      let modified = response.data.data.map((post) => {
+        //unnest each post, add currentPicture index and store it all in an object
+        return { ...post, currentPicture: 0 };
+      });
+      setAllPosts(modified);
     } catch (error) {
       console.log(error);
     }
   };
+
+  //show the current clicked picture as the main picture of the post
+  const switchIndex = (pic_idx, post_idx) => {
+    let newArr = structuredClone(allPosts)
+    newArr[post_idx].currentPicture = pic_idx
+    setAllPosts(newArr)
+  }
 
   const editPost = async (post_id) => {
     try {
@@ -362,7 +373,7 @@ function Blog({ owner }) {
       </div>
       {allPosts.map(
         (
-          post //map without {} or return to actually render the posts
+          post, post_idx //map without {} or return to actually render the posts
         ) => (
           <div key={post._id} className="post-grid">
             <section>
@@ -375,16 +386,16 @@ function Blog({ owner }) {
               </div>
               <img
                 className="post-img"
-                src={post.pictures[pictureIndex]?.url}
+                src={post.pictures[post.currentPicture]?.url}
               />
               <div className="post-img-small-overview">
-                {post.pictures.map((pic, idx) => (
+                {post.pictures.map((pic, pic_idx) => (
                   //? before url to update only the posts with several pictures (without it the other posts would crash)
                   <img
                     key={pic.public_id}
                     className="post-img-small"
                     src={pic?.url}
-                    onClick={() => setPictureIndex(idx)}
+                    onClick={() => switchIndex(pic_idx, post_idx)}
                   />
                 ))}
               </div>

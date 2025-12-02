@@ -32,16 +32,29 @@ const UploadImages = (props) => {
         if (error) {
           console.log("Cloudinary Widget Error: ", error);
         } else {
-          result.event === "queues-end" &&
-            (console.log(result),
-            //add new uploads to the pictures array (first unnest it, then add it)
+          if (result.event === "success") {
+            let imageUrl = result.info.secure_url;
+            // If cropping occurred, the coordinates are in result.info.coordinates.custom[0]
+            if (
+              result.info.coordinates &&
+              result.info.coordinates.custom &&
+              result.info.coordinates.custom[0]
+            ) {
+              const [x, y, width, height] = result.info.coordinates.custom[0];
+              // Construct the transformation string
+              const cropParams = `c_crop,x_${x},y_${y},w_${width},h_${height}`;
+              // Inject the transformation into the URL after "/upload/"
+              imageUrl = imageUrl.replace("/upload/", `/upload/${cropParams}/`);
+            }
+
             setPictures((prev) => [
               ...prev,
               {
-                public_id: result.data.info.files[0].uploadInfo.public_id,
-                url: result.data.info.files[0].uploadInfo.secure_url,
+                public_id: result.info.public_id,
+                url: imageUrl,
               },
-            ]));
+            ]);
+          }
         }
       }
     );
