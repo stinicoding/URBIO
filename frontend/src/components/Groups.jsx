@@ -39,7 +39,7 @@ function getStyles(label, myLabels, theme) {
   };
 }
 
-function Groups({ owner }) {
+function Groups() {
   const [allPosts, setAllPosts] = useState([]);
   const [filteredPosts, setFilteredPosts] = useState(allPosts);
   const [myLabels, setMyLabels] = useState([]);
@@ -90,10 +90,7 @@ function Groups({ owner }) {
   const displayPosts = async () => {
     try {
       //post function, because get will pass the email in the url
-      const response = await axios.post(
-        `http://localhost:4040/posts/getposts`,
-        { owner: owner }
-      );
+      const response = await axios.post(`http://localhost:4040/posts/getposts`);
       //console.log(response.data.data);
       setAllPosts(response.data.data);
       setFilteredPosts(response.data.data);

@@ -45,10 +45,21 @@ const savePost = async (req, res) => {
 };
 
 const displayPosts = async (req, res) => {
-  const { owner } = req.body;
-  //console.log(owner);
+  //used in groups (show all posts) and in blog (show only my posts)
+  let owner;
+  if (req?.body?.owner) {
+    owner = req.body.owner;
+  }
+  console.log(`owner: ${owner}`);
+  let postings;
   try {
-    const postings = await Posts.find({ owner: owner }).sort({ datetime: -1 });
+    if (owner === undefined) {
+      postings = await Posts.find().sort({ datetime: -1 });
+    } else {
+      postings = await Posts.find({ owner: owner }).sort({
+        datetime: -1,
+      });
+    }
     //console.log(postings)
     res.send({ ok: true, data: postings });
   } catch (error) {
