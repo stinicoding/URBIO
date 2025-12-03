@@ -25,6 +25,8 @@ import {
 } from "@mui/x-date-pickers";
 import { AdapterDayjs } from "@mui/x-date-pickers/AdapterDayjs";
 import dayjs from "dayjs"; //npm install @mui/x-date-pickers dayjs
+import StarIcon from "@mui/icons-material/Star";
+import StarBorderIcon from "@mui/icons-material/StarBorder";
 
 function Blog({ owner }) {
   const [open, setOpen] = useState(false);
@@ -103,10 +105,10 @@ function Blog({ owner }) {
 
   //show the current clicked picture as the main picture of the post
   const switchIndex = (pic_idx, post_idx) => {
-    let newArr = structuredClone(allPosts)
-    newArr[post_idx].currentPicture = pic_idx
-    setAllPosts(newArr)
-  }
+    let newArr = structuredClone(allPosts);
+    newArr[post_idx].currentPicture = pic_idx;
+    setAllPosts(newArr);
+  };
 
   const editPost = async (post_id) => {
     try {
@@ -302,7 +304,7 @@ function Blog({ owner }) {
                 />
                 <UploadImages required setPictures={setPictures} />
                 {pictures.map((pic) => (
-                  <p className="upload-url">{`${pic.url.slice(0,70)} ...`}</p>
+                  <p className="upload-url">{`${pic.url.slice(0, 70)} ...`}</p>
                 ))}
                 <Autocomplete
                   multiple
@@ -350,7 +352,8 @@ function Blog({ owner }) {
                     ))}
                 </List>
                 <Rating
-                  className="rating-mui"
+                  icon={<StarIcon style={{ color: "#E86B92", fontSize: 18 }} />}
+                  emptyIcon={<StarBorderIcon style={{ fontSize: 18 }} />}
                   name="simple-controlled"
                   value={rating}
                   onChange={(event, newValue) => setRating(newValue)}
@@ -372,7 +375,8 @@ function Blog({ owner }) {
       </div>
       {allPosts.map(
         (
-          post, post_idx //map without {} or return to actually render the posts
+          post,
+          post_idx //map without {} or return to actually render the posts
         ) => (
           <div key={post._id} className="post-grid">
             <section>
@@ -460,7 +464,8 @@ function Blog({ owner }) {
               <div className="post-rating">
                 <p>Rating: </p>
                 <Rating
-                  className="rating-mui"
+                  icon={<StarIcon style={{ color: "#E86B92", fontSize: 18 }} />}
+                  emptyIcon={<StarBorderIcon style={{ fontSize: 18 }} />}
                   name="simple-controlled"
                   value={post.rating}
                   readOnly

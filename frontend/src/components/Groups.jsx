@@ -18,7 +18,6 @@ import {
   Chip,
 } from "@mui/material";
 import dayjs from "dayjs"; //npm install @mui/x-date-pickers dayjs
-
 import StarIcon from "@mui/icons-material/Star";
 import StarBorderIcon from "@mui/icons-material/StarBorder";
 import IconButton from "@mui/material/IconButton";
@@ -217,13 +216,6 @@ function Groups() {
               <MenuItem value="all">All</MenuItem>
             </Select>
           </FormControl>
-          <p>Rating</p>
-          <Rating
-            className="rating-filter"
-            name="simple-controlled"
-            value={ratingFilter}
-            onChange={(event, newValue) => setRatingFilter(newValue)}
-          />
         </div>
         <div>
           <FormControl
@@ -276,6 +268,14 @@ function Groups() {
                 ))}
             </Select>
           </FormControl>
+          <p>Rating</p>
+          <Rating
+            icon={<StarIcon style={{ color: "#E86B92", fontSize: 18 }} />}
+            emptyIcon={<StarBorderIcon style={{ fontSize: 18 }} />}
+            name="simple-controlled"
+            value={ratingFilter}
+            onChange={(event, newValue) => setRatingFilter(newValue)}
+          />
         </div>
       </div>
       <p className="results">Results: {filteredPosts.length}</p>
@@ -354,7 +354,10 @@ function Groups() {
                 <div className="post-rating">
                   <p>Rating: </p>
                   <Rating
-                    className="rating-mui"
+                    icon={
+                      <StarIcon style={{ color: "#E86B92", fontSize: 18 }} />
+                    }
+                    emptyIcon={<StarBorderIcon style={{ fontSize: 18 }} />}
                     name="simple-controlled"
                     value={post.rating}
                     readOnly
