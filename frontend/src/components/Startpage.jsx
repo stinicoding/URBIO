@@ -7,14 +7,12 @@ function Startpage() {
   const [search, setSearch] = useState("");
   const [filtered, setFiltered] = useState([]);
 
-
-
   const getAllCities = async () => {
     try {
       const allCities = await axios.get(
         "http://localhost:4040/cities/getallcities"
       );
-      console.log(allCities)
+      console.log(allCities);
       setCities(allCities.data.data);
       setFiltered(allCities.data.data.toSpliced(3));
     } catch (error) {
@@ -65,6 +63,7 @@ function Startpage() {
           </article>
         ))}
       </section>
+      {/*
       <section className="flex-buttons">
         <NavLink className="button-categories" to={"/trending"}>
           Trending Cities
@@ -76,6 +75,7 @@ function Startpage() {
           Create Your Own Story
         </NavLink>
       </section>
+      */}
     </>
   );
 }

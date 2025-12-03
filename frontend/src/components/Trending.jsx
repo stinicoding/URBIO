@@ -26,16 +26,13 @@ function Trending() {
       </section>
       <section className="grid">
         {cities?.map((ele, idx) => (
-          <article key={idx}>
+          <article key={idx} className="city-card">
             <div className="city-article">
               <img className="city-picture" src={ele.img} />
             </div>
             <h4>{ele.name}</h4>
           </article>
         ))}
-      </section>
-      <section className="button-more-section">
-        <button className="button-more">See More</button>
       </section>
     </>
   );

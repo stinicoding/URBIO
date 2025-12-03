@@ -7,16 +7,31 @@ function Header({ isLoggedIn }) {
     <div className="flex header-background">
       <div className="flex">
         <img className="logo" src={Logo_Pigeon} alt="URBIO-Logo" />
-        <NavLink id="home" to={"/"}><h1>URBIO</h1></NavLink>
+        <NavLink id="home" to={"/"}>
+          <h1>URBIO</h1>
+        </NavLink>
       </div>
-      {
-      isLoggedIn ? (
+      {isLoggedIn ? (
         <div className="flex">
-          <NavLink className="button-nav" to={"/blog"}>MyBlog</NavLink>
+          <NavLink className="button-nav" to={"/"}>
+            Home
+          </NavLink>
+          <NavLink className="button-nav" to={"/trending"}>
+            Trending
+          </NavLink>
+          <NavLink className="button-nav" to={"/blog"}>
+            MyBlog
+          </NavLink>
+          {/*
           <NavLink className="button-nav">Friends</NavLink>
-          <NavLink className="button-nav" to={"/groups"}>Groups</NavLink>
+          */}
+          <NavLink className="button-nav" to={"/groups"}>
+            Groups
+          </NavLink>
+          {/*
           <NavLink className="button-nav">Events</NavLink>
-          <img className="icon-profile" src={Profile} alt="Profile"/>
+          */}
+          <img className="icon-profile" src={Profile} alt="Profile" />
         </div>
       ) : (
         <div className="flex">
