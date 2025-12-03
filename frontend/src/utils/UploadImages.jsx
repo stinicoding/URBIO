@@ -65,9 +65,9 @@ const UploadImages = (props) => {
     <div className="flex_upload">
       {/* form to add title, description, author, date -- onchange goes to state */}
       <div className="upload">
-        <p className="post-button" onClick={uploadWidget}>
+        <span id="button-upload" onClick={uploadWidget}>
           Upload Picture
-        </p>
+        </span>
       </div>
       {/* button PUBLISH POST on click take data from state and send to server on the body -- function*/}
     </div>

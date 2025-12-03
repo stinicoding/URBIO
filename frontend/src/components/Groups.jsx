@@ -16,9 +16,12 @@ import {
   FormControl,
   Select,
   Chip,
-  useTheme,
 } from "@mui/material";
 import dayjs from "dayjs"; //npm install @mui/x-date-pickers dayjs
+
+import StarIcon from "@mui/icons-material/Star";
+import StarBorderIcon from "@mui/icons-material/StarBorder";
+import IconButton from "@mui/material/IconButton";
 
 const ITEM_HEIGHT = 48;
 const ITEM_PADDING_TOP = 8;
@@ -31,20 +34,12 @@ const MenuProps = {
   },
 };
 
-function getStyles(label, myLabels, theme) {
-  return {
-    fontWeight: myLabels.includes(label)
-      ? theme.typography.fontWeightMedium
-      : theme.typography.fontWeightRegular,
-  };
-}
-
 function Groups() {
   const [allPosts, setAllPosts] = useState([]);
   const [filteredPosts, setFilteredPosts] = useState(allPosts);
+  const [labels, setLabels] = useState(labelOptions);
   const [myLabels, setMyLabels] = useState([]);
-  const [recLabels, setRecLabels] = useState([]);
-  const [activeLabels, setActiveLabels] = useState([]);
+  const [selectedLabels, setSelectedLabels] = useState([]);
   const [pictureIndex, setPictureIndex] = useState(0);
   const [comment, setComment] = useState("");
   const [comments, setComments] = useState([]);
@@ -54,37 +49,17 @@ function Groups() {
   const [showSuggestion, setShowSuggestion] = useState(false);
   const [ratingFilter, setRatingFilter] = useState(null);
   const [timeFilter, setTimeFilter] = useState("all");
-  const theme = useTheme();
 
   //console.log(myLabels);
-  //console.log(recLabels);
-  //console.log(activeLabels);
+  //console.log(selectedLabels);
   //console.log(ratingFilter)
   //console.log(timeFilter);
-
-  //set recommended Labels (that are not included in my Labels)
-  const displayRecLabels = async () => {
-    try {
-      const rec = labelOptions.filter((label) => !myLabels.includes(label));
-      setRecLabels(rec);
-      //console.log(rec);
-    } catch (error) {
-      console.log(error);
-    }
-  };
 
   const handleChangeMyLabels = (event) => {
     const {
       target: { value },
     } = event;
-    setMyLabels(typeof value === "string" ? value.split(",") : value);
-  };
-
-  const handleChangeRecLabels = (event) => {
-    const {
-      target: { value },
-    } = event;
-    setRecLabels(typeof value === "string" ? value.split(",") : value);
+    setSelectedLabels(typeof value === "string" ? value.split(",") : value);
   };
 
   const displayPosts = async () => {
@@ -102,9 +77,10 @@ function Groups() {
   //filers: location, labels, rating, time
   const filterPosts = () => {
     let filtered = allPosts;
-    if (activeLabels.length > 0) {
+    if (selectedLabels.length > 0) {
       filtered = filtered.filter((post) =>
-        activeLabels.every((label) => post.labels.includes(label))
+        //some: one or more labels included, every: all labels included
+        selectedLabels.some((label) => post.labels.includes(label))
       );
     }
     if (location.length > 0) {
@@ -145,6 +121,12 @@ function Groups() {
     }
   };
 
+  const toggleFavorite = (label) => {
+    setMyLabels((prev) =>
+      prev.includes(label) ? prev.filter((l) => l !== label) : [...prev, label]
+    );
+  };
+
   const options = {
     method: "GET",
     url: "https://google-place-autocomplete-and-place-info.p.rapidapi.com/maps/api/place/autocomplete/json",
@@ -171,14 +153,6 @@ function Groups() {
   };
 
   useEffect(() => {
-    setMyLabels([
-      "Pet-friendly",
-      "Vegan",
-      "Vegetarian",
-      "Gluten-free",
-      "Romantic",
-    ]); //for testing
-    displayRecLabels();
     displayPosts();
   }, []); //without the [] it will run everytime any state updates, with the empty [] it runs once
 
@@ -192,15 +166,11 @@ function Groups() {
 
   useEffect(() => {
     filterPosts();
-  }, [activeLabels, location, ratingFilter, timeFilter, allPosts]);
+  }, [selectedLabels, location, ratingFilter, timeFilter, allPosts]);
 
   useEffect(() => {
     findPlace();
   }, [location]);
-
-  useEffect(() => {
-    displayRecLabels();
-  }, [myLabels]);
 
   return (
     <>
@@ -208,6 +178,7 @@ function Groups() {
       <div className="groups-grid">
         <div>
           <TextField
+            sx={{ minWidth: 260 }}
             className="white-background"
             value={location}
             onChange={(e) => {
@@ -231,14 +202,7 @@ function Groups() {
                 </ListItem>
               ))}
           </List>
-          <p>Rating</p>
-          <Rating
-            className="rating-filter"
-            name="simple-controlled"
-            value={ratingFilter}
-            onChange={(event, newValue) => setRatingFilter(newValue)}
-          />
-          <FormControl fullWidth>
+          <FormControl sx={{ minWidth: 260 }}>
             <InputLabel>Time</InputLabel>
             <Select
               className="white-background"
@@ -253,17 +217,26 @@ function Groups() {
               <MenuItem value="all">All</MenuItem>
             </Select>
           </FormControl>
+          <p>Rating</p>
+          <Rating
+            className="rating-filter"
+            name="simple-controlled"
+            value={ratingFilter}
+            onChange={(event, newValue) => setRatingFilter(newValue)}
+          />
         </div>
         <div>
-          <FormControl sx={{ m: 1 }}>
-            <InputLabel id="demo-multiple-chip-label">Groups</InputLabel>
+          <FormControl
+            sx={{ m: 1, minWidth: 260, margin: 0 }}
+            className="white-background"
+          >
+            <InputLabel id="groups-label">Groups</InputLabel>
             <Select
-              labelId="demo-multiple-chip-label"
-              id="demo-multiple-chip"
+              labelId="groups-label"
               multiple
-              value={myLabels}
+              value={selectedLabels}
               onChange={handleChangeMyLabels}
-              input={<OutlinedInput id="select-multiple-chip" label="Chip" />}
+              input={<OutlinedInput label="Groups" />}
               renderValue={(selected) => (
                 <Box sx={{ display: "flex", flexWrap: "wrap", gap: 0.5 }}>
                   {selected.map((value) => (
@@ -273,50 +246,37 @@ function Groups() {
               )}
               MenuProps={MenuProps}
             >
-              {myLabels.map((label) => (
-                <MenuItem
-                  key={label}
-                  value={label}
-                  style={getStyles(label, myLabels, theme)}
-                >
-                  {label}
-                </MenuItem>
-              ))}
+              {[...labels]
+                .sort((a, b) => myLabels.includes(b) - myLabels.includes(a))
+                .map((label) => (
+                  <MenuItem
+                    key={label}
+                    value={label}
+                    style={{
+                      display: "flex",
+                      justifyContent: "space-between",
+                      alignItems: "center",
+                    }}
+                  >
+                    {label}
+                    <IconButton
+                      size="small"
+                      onClick={(e) => {
+                        e.stopPropagation();
+                        toggleFavorite(label);
+                      }}
+                    >
+                      {myLabels.includes(label) ? (
+                        <StarIcon style={{ color: "#E86B92", fontSize: 18 }} />
+                      ) : (
+                        <StarBorderIcon style={{ fontSize: 18 }} />
+                      )}
+                    </IconButton>
+                  </MenuItem>
+                ))}
             </Select>
           </FormControl>
         </div>
-        <div>
-          <FormControl sx={{ m: 1 }}>
-            <InputLabel id="demo-multiple-chip-label">Recommended</InputLabel>
-            <Select
-              labelId="demo-multiple-chip-label"
-              id="demo-multiple-chip"
-              multiple
-              value={recLabels}
-              onChange={handleChangeRecLabels}
-              input={<OutlinedInput id="select-multiple-chip" label="Chip" />}
-              renderValue={(selected) => (
-                <Box sx={{ display: "flex", flexWrap: "wrap", gap: 0.5 }}>
-                  {selected.map((value) => (
-                    <Chip key={value} label={value} />
-                  ))}
-                </Box>
-              )}
-              MenuProps={MenuProps}
-            >
-              {recLabels.map((label) => (
-                <MenuItem
-                  key={label}
-                  value={label}
-                  style={getStyles(label, recLabels, theme)}
-                >
-                  {label}
-                </MenuItem>
-              ))}
-            </Select>
-          </FormControl>
-        </div>
-        <div></div>
       </div>
       <p className="results">Results: {filteredPosts.length}</p>
       <div>

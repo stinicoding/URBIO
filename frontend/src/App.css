@@ -37,6 +37,12 @@ p {
     color: #3b3b3b;
 }
 
+span {
+    font-family: Arial, Helvetica, sans-serif;
+    font-size: 14px;
+    color: #3b3b3b;
+}
+
 label {
     font-family: Arial, Helvetica, sans-serif;
     font-size: 14px;
@@ -52,6 +58,21 @@ button {
     background-color: #E86B92;
     border-radius: 5px;
     border-color: white;
+}
+
+#button-upload {
+    color: #4e7ce6 !important;
+    border: 1px solid #4e7ce6 !important;
+    background-color: white !important;
+    padding: 5px;
+}
+
+#button-upload:hover {
+    color: white !important;
+    border: 1px solid white !important;
+    background-color: #4e7ce6 !important;
+    padding: 5px;
+    cursor: pointer;
 }
 
 #home {
@@ -229,9 +250,10 @@ button {
 
 .groups-grid {
     display: grid;
-    grid-template-columns: 1fr 2fr 3fr;
+    grid-template-columns: 1fr 3fr;
     align-items: top;
     margin: 20px;
+    gap: 40px;
 }
 
 .screen {
@@ -295,7 +317,9 @@ button {
 
 .post-img-small-overview {
     display: flex;
-    gap: 10px;
+    flex-wrap: wrap;
+    gap: 9px;
+    justify-content: flex-start;
 }
 
 .post-img-small {
@@ -351,6 +375,7 @@ button {
 .comment-owner {
     color: #4e7ce6;
     font-size: 14px;
+    padding-right: 5px;
 }
 
 .icons {
@@ -368,4 +393,9 @@ button {
 
 .results {
     margin: 20px;
+}
+
+.upload-url {
+    margin: 0;
+    color: #4e7ce6;
 }

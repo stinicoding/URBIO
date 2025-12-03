@@ -32,7 +32,6 @@ function Blog({ owner }) {
   const [description, setDescription] = useState("");
   const [labels, setLabels] = useState([]);
   const [pictures, setPictures] = useState([]);
-  const [pictureIndex, setPictureIndex] = useState({});
   const [datetime, setDatetime] = useState(dayjs());
   const [location, setLocation] = useState("");
   const [suggestion, setSuggestion] = useState([]);
@@ -49,7 +48,7 @@ function Blog({ owner }) {
   //console.log(datetime.format())
   //console.log(allPosts); //outside of the function so the state is updated
   //console.log(comments);
-  console.log(pictures);
+  //console.log(pictures);
 
   const handleClickOpen = () => {
     setOpen(true);
@@ -91,7 +90,7 @@ function Blog({ owner }) {
         `http://localhost:4040/posts/getposts`,
         { owner: owner }
       );
-      console.log(response.data.data);
+      //console.log(response.data.data);
       let modified = response.data.data.map((post) => {
         //unnest each post, add currentPicture index and store it all in an object
         return { ...post, currentPicture: 0 };
@@ -155,7 +154,7 @@ function Blog({ owner }) {
       const response = await axios.delete(
         `http://localhost:4040/posts/deletepost/${post_id}`
       );
-      console.log(response.data.data);
+      //console.log(response.data.data);
       setAlert(true);
       setTimeout(() => {
         displayPosts();
@@ -303,7 +302,7 @@ function Blog({ owner }) {
                 />
                 <UploadImages required setPictures={setPictures} />
                 {pictures.map((pic) => (
-                  <p>{pic.url}</p>
+                  <p className="upload-url">{`${pic.url.slice(0,70)} ...`}</p>
                 ))}
                 <Autocomplete
                   multiple
