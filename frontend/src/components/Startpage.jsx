@@ -1,15 +1,44 @@
-import Barcelona from "../pictures/Barcelona.png";
-import Istanbul from "../pictures/Istanbul.png";
-import Berlin from "../pictures/Berlin.png";
+import { useState, useEffect } from "react";
+import axios from "axios";
 import { NavLink } from "react-router";
 
-const cities = [
-  { name: "Barcelona", img: Barcelona },
-  { name: "Istanbul", img: Istanbul },
-  { name: "Berlin", img: Berlin },
-];
-
 function Startpage() {
+  const [cities, setCities] = useState([]);
+  const [search, setSearch] = useState("");
+  const [filtered, setFiltered] = useState([]);
+
+
+
+  const getAllCities = async () => {
+    try {
+      const allCities = await axios.get(
+        "http://localhost:4040/cities/getallcities"
+      );
+      console.log(allCities)
+      setCities(allCities.data.data);
+      setFiltered(allCities.data.data.toSpliced(3));
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
+  const filterCities = () => {
+    const filter = cities.filter((city) => {
+      return city.name.toLowerCase().includes(search.toLowerCase());
+    });
+    setFiltered(filter.toSpliced(3));
+  };
+
+  useEffect(() => {
+    getAllCities();
+  }, []);
+
+  useEffect(() => {
+    if (search) {
+      filterCities();
+    }
+  }, [search]);
+
   return (
     <>
       <section className="splash">
@@ -18,11 +47,16 @@ function Startpage() {
       <section>
         <h3>Find Your Nest</h3>
         <div className="search">
-          <input className="search-input" type="text" placeholder="Barcelona" />
+          <input
+            className="search-input"
+            type="text"
+            placeholder="Barcelona"
+            onChange={(e) => setSearch(e.target.value)}
+          />
         </div>
       </section>
       <section className="grid">
-        {cities.map((ele) => (
+        {filtered.map((ele) => (
           <article key={ele.name} className="city-card">
             <div className="city-article">
               <img className="city-picture" src={ele.img} />
@@ -32,9 +66,15 @@ function Startpage() {
         ))}
       </section>
       <section className="flex-buttons">
-        <NavLink className="button-categories" to={"/trending"}>Trending Cities</NavLink>
-        <NavLink className="button-categories" to={"/"}>Trending Blogs</NavLink>
-        <NavLink className="button-categories" to={"/"}>Create Your Own Story</NavLink>
+        <NavLink className="button-categories" to={"/trending"}>
+          Trending Cities
+        </NavLink>
+        <NavLink className="button-categories" to={"/"}>
+          Trending Blogs
+        </NavLink>
+        <NavLink className="button-categories" to={"/"}>
+          Create Your Own Story
+        </NavLink>
       </section>
     </>
   );

@@ -7,7 +7,7 @@ const citySchema = new mongoose.Schema({
     required: true,
     unique: true,
   },
-  //url of image?
+  //url of image
   img: {
     type: String,
     unique: true,

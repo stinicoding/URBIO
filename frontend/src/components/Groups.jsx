@@ -54,7 +54,7 @@ function Groups() {
   //console.log(ratingFilter)
   //console.log(timeFilter);
 
-  const handleChangeMyLabels = (event) => {
+  const handleChangeSelectedLabels = (event) => {
     const {
       target: { value },
     } = event;
@@ -227,7 +227,7 @@ function Groups() {
               labelId="groups-label"
               multiple
               value={selectedLabels}
-              onChange={handleChangeMyLabels}
+              onChange={handleChangeSelectedLabels}
               input={<OutlinedInput label="Groups" />}
               renderValue={(selected) => (
                 <Box sx={{ display: "flex", flexWrap: "wrap", gap: 0.5 }}>
