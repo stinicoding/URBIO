@@ -20,8 +20,20 @@ const displayComments = async (req, res) => {
     const comments = await Comments.find({ post_id: post_id }).sort({
       datetime: -1,
     });
-    console.log(comments);
+    //console.log(comments);
     res.send({ ok: true, data: comments });
+  } catch (error) {
+    res.send({ ok: false, message: error });
+  }
+};
+
+const deleteComment = async (req, res) => {
+  const { comment_id } = req.params;
+  //console.log(comment_id);
+  try {
+    const com = await Comments.findByIdAndDelete({ _id: comment_id });
+    //console.log(com);
+    res.send({ ok: true, data: com });
   } catch (error) {
     res.send({ ok: false, message: error });
   }
@@ -30,4 +42,5 @@ const displayComments = async (req, res) => {
 module.exports = {
   saveComment,
   displayComments,
+  deleteComment,
 };

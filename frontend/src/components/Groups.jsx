@@ -33,7 +33,7 @@ const MenuProps = {
   },
 };
 
-function Groups() {
+function Groups({ owner }) {
   const [allPosts, setAllPosts] = useState([]);
   const [filteredPosts, setFilteredPosts] = useState(allPosts);
   const [labels, setLabels] = useState(labelOptions);
@@ -106,6 +106,19 @@ function Groups() {
       );
     }
     setFilteredPosts(filtered);
+  };
+
+  const saveComment = async (post_id) => {
+    try {
+      await axios.post("http://localhost:4040/comments/newcomment", {
+        post_id: post_id,
+        owner: owner,
+        comment: comment,
+      });
+      setComment("");
+    } catch (error) {
+      console.log(error);
+    }
   };
 
   const displayComments = async (post_id) => {
@@ -327,7 +340,10 @@ function Groups() {
                   >
                     {showComments ? "Hide Comments" : "Show Comments"}
                   </p>
-                  {showComments && renderComments(comments, post)}
+                  {showComments &&
+                    renderComments(comments, post, async () => {
+                      await displayComments(post._id);
+                    })}
                   <input
                     type="text"
                     placeholder="Add a comment"

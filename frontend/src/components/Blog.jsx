@@ -421,7 +421,10 @@ function Blog({ owner }) {
                 >
                   {showComments ? "Hide Comments" : "Show Comments"}
                 </p>
-                {showComments && renderComments(comments, post)}
+                {showComments &&
+                  renderComments(comments, post, async () => {
+                    await displayComments(post._id);
+                  })}
                 <input
                   type="text"
                   placeholder="Add a comment"
