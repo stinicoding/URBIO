@@ -133,7 +133,7 @@ function Groups({ owner }) {
     }
   };
 
-  const toggleFavorite = (label) => {
+  const toggleFavorite = async (label) => {
     if (myLabels?.length > 0) {
       setMyLabels((prev) => {
         const newLabels = prev.includes(label)
@@ -145,16 +145,16 @@ function Groups({ owner }) {
       });
     } else {
       setMyLabels(label);
-      updateUserGroups(label);
-      return
+      await updateUserGroups(label);
+      return;
     }
   };
 
   const getUserGroups = async () => {
     try {
-      const groups = await axios.get(`${URL}/users/getgroups/${owner}`, owner);
-      console.log(groups.data?.data?.groups);
-      setMyLabels(groups.data?.data?.groups);
+      const groups = await axios.get(`${URL}/users/getgroups/${owner}`);
+      //console.log(groups.data?.data);
+      setMyLabels(groups.data?.data);
     } catch (error) {
       console.log(error);
     }
@@ -291,7 +291,7 @@ function Groups({ owner }) {
                 .sort((a, b) => myLabels?.includes(b) - myLabels?.includes(a))
                 .map((label) => (
                   <MenuItem
-                    key={label}
+                    key={crypto.randomUUID()}
                     value={label}
                     style={{
                       display: "flex",

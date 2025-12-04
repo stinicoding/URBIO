@@ -87,8 +87,8 @@ router.get("/getgroups/:owner", async (req, res) => {
   const { owner } = req.params;
   //console.log(owner);
   try {
-    const user = await Users.find({ email: owner });
-    res.send({ ok: true, data: user });
+    const user = await Users.find({ email: owner }); //find returns an array
+    res.send({ ok: true, data: user[0].groups }); //only send group array to the frontend
   } catch (error) {
     res.send({ ok: false, message: error });
   }
