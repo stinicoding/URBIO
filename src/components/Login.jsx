@@ -41,7 +41,7 @@ function Login({ login }) {
             type="password"
             onChange={(e) => setPassword(e.target.value)}
           />
-          <button onClick={handleSubmit}>Login</button>
+          <button className="button-login" onClick={handleSubmit}>Login</button>
         </div>
       </div>
     </>

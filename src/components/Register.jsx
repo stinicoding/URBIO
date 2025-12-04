@@ -85,7 +85,7 @@ function Register() {
               type="password"
               onChange={(e) => setPassword2(e.target.value)}
             />
-            <button onClick={validateRegistration}>Register</button>
+            <button className="button-login" onClick={validateRegistration}>Register</button>
           </div>
           <div>
             <h4>{shown && message}</h4>

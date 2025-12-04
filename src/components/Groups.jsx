@@ -50,7 +50,7 @@ function Groups({ owner }) {
   const [ratingFilter, setRatingFilter] = useState(null);
   const [timeFilter, setTimeFilter] = useState("all");
 
-  console.log(owner);
+  //console.log(owner);
   //console.log(myLabels);
   //console.log(selectedLabels);
   //console.log(ratingFilter)
@@ -134,20 +134,41 @@ function Groups({ owner }) {
   };
 
   const toggleFavorite = (label) => {
-    setMyLabels((prev) =>
-      prev.includes(label) ? prev.filter((l) => l !== label) : [...prev, label]
-    );
+    if (myLabels?.length > 0) {
+      setMyLabels((prev) => {
+        const newLabels = prev.includes(label)
+          ? prev.filter((l) => l !== label)
+          : [...prev, label];
+
+        updateUserGroups(newLabels);
+        return newLabels;
+      });
+    } else {
+      setMyLabels(label);
+      updateUserGroups(label);
+      return
+    }
   };
 
-  const updateUserGroups = async () => {
-    console.log(owner);
+  const getUserGroups = async () => {
     try {
-      const group = await axios.patch(`${URL}/users/updategroups`, {
-        labels: myLabels,
+      const groups = await axios.get(`${URL}/users/getgroups/${owner}`, owner);
+      console.log(groups.data?.data?.groups);
+      setMyLabels(groups.data?.data?.groups);
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
+  const updateUserGroups = async (newLab) => {
+    //console.log(owner);
+    try {
+      const groups = await axios.patch(`${URL}/users/updategroups`, {
         owner: owner,
+        labels: newLab,
       });
-      console.log(group);
-      //await updateLabels();
+      //console.log(groups.data.data.groups);
+      setMyLabels(groups.data?.data?.groups);
     } catch (error) {
       console.log(error);
     }
@@ -180,6 +201,7 @@ function Groups({ owner }) {
 
   useEffect(() => {
     displayPosts();
+    getUserGroups();
   }, []); //without the [] it will run everytime any state updates, with the empty [] it runs once
 
   useEffect(() => {
@@ -266,7 +288,7 @@ function Groups({ owner }) {
               MenuProps={MenuProps}
             >
               {[...labels]
-                .sort((a, b) => myLabels.includes(b) - myLabels.includes(a))
+                .sort((a, b) => myLabels?.includes(b) - myLabels?.includes(a))
                 .map((label) => (
                   <MenuItem
                     key={label}
@@ -278,32 +300,15 @@ function Groups({ owner }) {
                     }}
                   >
                     {label}
-
                     <IconButton
                       size="small"
                       onMouseDown={(e) => e.preventDefault()}
                       onClick={(e) => {
                         e.stopPropagation();
                         toggleFavorite(label);
-                        updateUserGroups();
                       }}
                     >
-                      {myLabels.includes(label) ? (
-                        <StarIcon style={{ color: "#E86B92", fontSize: 18 }} />
-                      ) : (
-                        <StarBorderIcon style={{ fontSize: 18 }} />
-                      )}
-                    </IconButton>
-
-                    <IconButton
-                      size="small"
-                      onClick={(e) => {
-                        e.stopPropagation();
-                        toggleFavorite(label);
-                        updateUserGroups();
-                      }}
-                    >
-                      {myLabels.includes(label) ? (
+                      {myLabels?.includes(label) ? (
                         <StarIcon style={{ color: "#E86B92", fontSize: 18 }} />
                       ) : (
                         <StarBorderIcon style={{ fontSize: 18 }} />

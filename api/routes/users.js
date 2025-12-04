@@ -60,8 +60,6 @@ router.post("/login", async (req, res) => {
   }
 });
 
-
-
 router.post("/token", (req, res) => {
   const token = req.headers.authorization;
   jwt.verify(token, jwt_secret, (err, succ) => {
@@ -76,10 +74,20 @@ router.patch("/updategroups", async (req, res) => {
   try {
     const user = await Users.findOneAndUpdate(
       { email: owner },
-      { groups: labels },
-      { new: true }
+      { groups: labels }
     );
     console.log(user);
+    res.send({ ok: true, data: user });
+  } catch (error) {
+    res.send({ ok: false, message: error });
+  }
+});
+
+router.get("/getgroups/:owner", async (req, res) => {
+  const { owner } = req.params;
+  //console.log(owner);
+  try {
+    const user = await Users.find({ email: owner });
     res.send({ ok: true, data: user });
   } catch (error) {
     res.send({ ok: false, message: error });

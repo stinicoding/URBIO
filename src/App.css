@@ -160,6 +160,10 @@ button {
     width: 80px;
 }
 
+.button-login {
+    margin-top: 15px;
+}
+
 .flex {
     display: flex;
     justify-content: space-between;
