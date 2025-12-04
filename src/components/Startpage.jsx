@@ -12,7 +12,9 @@ function Startpage() {
       const allCities = await axios.get(`${URL}/cities/getallcities`);
       //console.log(allCities);
       setCities(allCities.data.data);
+      if(allCities.data.data){
       setFiltered(allCities?.data?.data?.toSpliced(3));
+      }
     } catch (error) {
       console.log(error);
     }
