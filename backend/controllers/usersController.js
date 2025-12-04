@@ -68,6 +68,23 @@ const verifyToken = (req, res) => {
   });
 };
 
+const updateGroups = async (req, res) => {
+  const { owner, labels } = req.body;
+  try {
+    const user = await Users.findOneAndUpdate(
+      { email: owner },
+      { groups: labels },
+      { new: true }
+    );
+    console.log(user);
+    res.send({ ok: true, data: user });
+  } catch (error) {
+    res.send({ ok: false, message: error });
+  }
+};
+
+/*
+//Profile Picture - not implemented yet
 const uploadPicture = async (req, res) => {
   const { files } = req.body;
   let pictures = files.map((pic) => {
@@ -101,11 +118,13 @@ const removePicture = async (req, res) => {
     res.json({ ok: false });
   }
 };
+*/
 
 module.exports = {
   registerUser,
   loginUser,
   verifyToken,
-  uploadPicture,
-  removePicture,
+  updateGroups,
+  //uploadPicture,
+  //removePicture,
 };

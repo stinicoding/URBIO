@@ -1,6 +1,5 @@
 import { useState, useEffect } from "react";
 import axios from "axios";
-import { NavLink } from "react-router";
 
 function Startpage() {
   const [cities, setCities] = useState([]);
@@ -12,7 +11,7 @@ function Startpage() {
       const allCities = await axios.get(
         "http://localhost:4040/cities/getallcities"
       );
-      console.log(allCities);
+      //console.log(allCities);
       setCities(allCities.data.data);
       setFiltered(allCities.data.data.toSpliced(3));
     } catch (error) {

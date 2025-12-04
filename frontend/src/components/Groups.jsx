@@ -49,6 +49,7 @@ function Groups({ owner }) {
   const [ratingFilter, setRatingFilter] = useState(null);
   const [timeFilter, setTimeFilter] = useState("all");
 
+  console.log(owner);
   //console.log(myLabels);
   //console.log(selectedLabels);
   //console.log(ratingFilter)
@@ -137,6 +138,23 @@ function Groups({ owner }) {
     setMyLabels((prev) =>
       prev.includes(label) ? prev.filter((l) => l !== label) : [...prev, label]
     );
+  };
+
+  const updateUserGroups = async () => {
+    console.log(owner);
+    try {
+      const group = await axios.patch(
+        "http://localhost:4040/users/updategroups",
+        {
+          labels: myLabels,
+          owner: owner,
+        }
+      );
+      console.log(group);
+      //await updateLabels();
+    } catch (error) {
+      console.log(error);
+    }
   };
 
   const options = {
@@ -264,11 +282,29 @@ function Groups({ owner }) {
                     }}
                   >
                     {label}
+
+                    <IconButton
+                      size="small"
+                      onMouseDown={(e) => e.preventDefault()}
+                      onClick={(e) => {
+                        e.stopPropagation();
+                        toggleFavorite(label);
+                        updateUserGroups();
+                      }}
+                    >
+                      {myLabels.includes(label) ? (
+                        <StarIcon style={{ color: "#E86B92", fontSize: 18 }} />
+                      ) : (
+                        <StarBorderIcon style={{ fontSize: 18 }} />
+                      )}
+                    </IconButton>
+
                     <IconButton
                       size="small"
                       onClick={(e) => {
                         e.stopPropagation();
                         toggleFavorite(label);
+                        updateUserGroups();
                       }}
                     >
                       {myLabels.includes(label) ? (
