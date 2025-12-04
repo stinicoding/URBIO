@@ -1,5 +1,6 @@
 const router = require("express").Router();
 const Posts = require("../models/Posts.js");
+const Comments = require("../models/Comments.js");
 
 //Cloudinary for uploading pictures
 const cloudinary = require("cloudinary");
@@ -113,8 +114,9 @@ router.delete("/deletepost/:post_id", async (req, res) => {
   const { post_id } = req.params;
   try {
     const post = await Posts.findByIdAndDelete(post_id);
-    console.log(`delete: ${post}`);
-    res.send({ ok: true, data: post });
+    const com = await Comments.deleteMany({ post_id: post_id });
+    console.log(`delete: ${(post, com)}`);
+    res.send({ ok: true, data_post: post, data_com: com });
   } catch (error) {
     res.send({ ok: false, message: error });
   }

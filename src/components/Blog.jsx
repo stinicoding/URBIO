@@ -81,6 +81,7 @@ function Blog({ owner }) {
         rating: rating,
         comments: comments,
       });
+      await displayPosts()
     } catch (error) {
       console.log(error);
     }
