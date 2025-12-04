@@ -1,19 +1,21 @@
 import { useState, useEffect } from "react";
 import axios from "axios";
 import URL from "../config.js";
+import { useNavigate } from "react-router";
 
-function Startpage() {
+function Startpage({ setCity }) {
   const [cities, setCities] = useState([]);
   const [search, setSearch] = useState("");
   const [filtered, setFiltered] = useState([]);
+  const navigate = useNavigate();
 
   const getAllCities = async () => {
     try {
       const allCities = await axios.get(`${URL}/cities/getallcities`);
       //console.log(allCities);
       setCities(allCities.data.data);
-      if(allCities.data.data){
-      setFiltered(allCities?.data?.data?.toSpliced(3));
+      if (allCities.data.data) {
+        setFiltered(allCities?.data?.data?.toSpliced(3));
       }
     } catch (error) {
       console.log(error);
@@ -55,7 +57,14 @@ function Startpage() {
       </section>
       <section className="grid">
         {filtered.map((ele) => (
-          <article key={ele.name} className="city-card">
+          <article
+            key={ele.name}
+            className="city-card"
+            onClick={() => {
+              setCity(ele.name);
+              navigate("/groups");
+            }}
+          >
             <div className="city-article">
               <img className="city-picture" src={ele.img} />
             </div>

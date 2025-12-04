@@ -1,9 +1,11 @@
 import { useState, useEffect } from "react";
 import axios from "axios";
 import URL from "../config.js";
+import { useNavigate } from "react-router";
 
-function Trending() {
+function Trending({ setCity }) {
   const [cities, setCities] = useState();
+  const navigate = useNavigate();
 
   const getAllCities = async () => {
     try {
@@ -25,11 +27,18 @@ function Trending() {
       </section>
       <section className="grid">
         {cities?.map((ele, idx) => (
-          <article key={idx} className="city-card">
+          <article
+            key={idx}
+            className="city-card"
+            onClick={() => {
+              setCity(ele.name);
+              navigate("/groups");
+            }}
+          >
             <div className="city-article">
               <img className="city-picture" src={ele.img} />
             </div>
-            <h4>{ele.name}</h4>
+            <h4 className="city-name">{ele.name}</h4>
           </article>
         ))}
       </section>

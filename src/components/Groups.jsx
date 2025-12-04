@@ -34,7 +34,7 @@ const MenuProps = {
   },
 };
 
-function Groups({ owner }) {
+function Groups({ owner, city }) {
   const [allPosts, setAllPosts] = useState([]);
   const [filteredPosts, setFilteredPosts] = useState(allPosts);
   const [labels, setLabels] = useState(labelOptions);
@@ -44,7 +44,7 @@ function Groups({ owner }) {
   const [comment, setComment] = useState("");
   const [comments, setComments] = useState([]);
   const [showComments, setShowComments] = useState(false);
-  const [location, setLocation] = useState("");
+  const [location, setLocation] = useState(city || "");
   const [suggestion, setSuggestion] = useState([]);
   const [showSuggestion, setShowSuggestion] = useState(false);
   const [ratingFilter, setRatingFilter] = useState(null);

@@ -17,6 +17,7 @@ function App() {
   const [isLoggedIn, setIsLoggedIn] = useState(false);
   const [user, setUser] = useState(JSON.parse(localStorage.getItem("user")));
   const [token, setToken] = useState(JSON.parse(localStorage.getItem("token")));
+  const [city, setCity] = useState("");
 
   useEffect(() => {
     const verify_token = async () => {
@@ -49,12 +50,12 @@ function App() {
       <Router>
         <Header isLoggedIn={isLoggedIn} />
         <Routes>
-          <Route path="/" element={<Startpage />} />
+          <Route path="/" element={<Startpage setCity={setCity} />} />
           <Route path="/register" element={<Register />} />
           <Route path="/login" element={<Login login={login} />} />
-          <Route path="/trending" element={<Trending />} />
+          <Route path="/trending" element={<Trending setCity={setCity} />} />
           <Route path="/blog" element={<Blog owner={user?.email} />} />
-          <Route path="/groups" element={<Groups owner={user?.email} />} />
+          <Route path="/groups" element={<Groups owner={user?.email} city={city}/>} />
         </Routes>
         <Footer />
       </Router>
