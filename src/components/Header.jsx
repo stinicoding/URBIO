@@ -35,8 +35,12 @@ function Header({ isLoggedIn }) {
         </div>
       ) : (
         <div className="flex">
-          <NavLink to={"/login"}>Login</NavLink>
-          <NavLink to={"/register"}>Register</NavLink>
+          <NavLink className="button-nav" to={"/login"}>
+            Login
+          </NavLink>
+          <NavLink className="button-nav" to={"/register"}>
+            Register
+          </NavLink>
         </div>
       )}
     </div>

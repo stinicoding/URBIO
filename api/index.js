@@ -36,6 +36,6 @@ if (process.env.NODE_ENV !== 'production') {
     res.sendFile(__dirname + "/dist/index.html");
   });
   // Start the server
-  const port = process.env.PORT || 4444;
+  const port = process.env.PORT || 4040;
   app.listen(port, () => console.log("🚀 Listening on port: " + port + " 🚀"));
 }
