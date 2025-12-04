@@ -60,14 +60,7 @@ router.post("/login", async (req, res) => {
   }
 });
 
-const verifyToken = (req, res) => {
-  const token = req.headers.authorization;
-  jwt.verify(token, jwt_secret, (err, succ) => {
-    err
-      ? res.json({ ok: false, message: "Token is corrupted" })
-      : res.json({ ok: true, succ });
-  });
-};
+
 
 router.post("/token", (req, res) => {
   const token = req.headers.authorization;

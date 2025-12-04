@@ -19,7 +19,13 @@ async function connectingToDB() {
 connectingToDB();
 
 //==========================================================================
-app.use(require("cors")());
+app.use(require("cors")({
+  origin: "*",
+  methods: ["GET", "POST", "PUT", "DELETE", "OPTIONS", "PATCH"],
+  allowedHeaders: ["Content-Type", "Authorization", "Accept", "X-Requested-With"],
+  preflightContinue: false,
+  optionsSuccessStatus: 204
+}));
 //==========================================================================
 app.use("/api/users", require("./routes/users.js"));
 app.use("/api/posts", require("./routes/posts.js"));
