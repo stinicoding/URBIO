@@ -48,7 +48,7 @@ function App() {
   return (
     <>
       <Router>
-        <Header isLoggedIn={isLoggedIn} />
+        <Header isLoggedIn={isLoggedIn} setIsLoggedIn={setIsLoggedIn} />
         <Routes>
           <Route path="/" element={<Startpage setCity={setCity} />} />
           <Route path="/register" element={<Register />} />

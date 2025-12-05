@@ -159,6 +159,15 @@ button {
     border-radius: 5px;
     padding: 5px 10px;
     width: auto;
+    transition: 0.25s ease;
+}
+
+.button-nav:hover {
+    cursor: pointer;
+    color: #E86B92;
+    background-color: white;
+    transform: scale(1.05);
+
 }
 
 .button-login {
@@ -184,6 +193,13 @@ button {
     padding: 10px 20px;
 }
 
+.header-nav {
+    display: flex;
+    gap: 1em;
+    align-items: center;
+    justify-content: center;
+}
+
 /*left and right for responsiveness*/
 .header-left {
     display: flex;
@@ -194,6 +210,7 @@ button {
 .header-right {
     display: flex;
     align-items: center;
+    justify-content: right;
     gap: 0.7rem;
 }
 
@@ -294,6 +311,10 @@ button {
     margin: 20px;
     gap: 20px;
     border-radius: 10px;
+}
+
+.post-caption {
+    text-align: left;
 }
 
 .post-info {
@@ -409,6 +430,35 @@ button {
     color: #4e7ce6;
 }
 
+@media (max-width: 1200px) {
+    .grid {
+        grid-template-columns: repeat(2, 1fr);
+    }
+}
+
+@media (max-width: 750px) {
+    .splash {
+        background-image: url("./pictures/Barcelona_splash_small.jpg");
+        height: 50vh;
+    }
+
+    .groups-grid {
+        grid-template-columns: 1fr;
+    }
+
+    .post-grid {
+        grid-template-columns: 1fr;
+    }
+
+    .post-img {
+        width: 70vw;
+    }
+
+    .post-box {
+        width: 70vw;
+    }
+}
+
 @media (max-width: 600px) {
     .grid {
         grid-template-columns: 1fr;
@@ -426,11 +476,6 @@ button {
 
     .icon-profile {
         height: 30px;
-    }
-
-    .splash {
-        background-image: url("./pictures/Barcelona_splash_small.jpg");
-        height: 50vh;
     }
 
     .logo {

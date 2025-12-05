@@ -81,7 +81,7 @@ function Blog({ owner }) {
         rating: rating,
         comments: comments,
       });
-      await displayPosts()
+      await displayPosts();
     } catch (error) {
       console.log(error);
     }
@@ -263,7 +263,7 @@ function Blog({ owner }) {
             onClose={handleClose}
             PaperProps={{
               sx: {
-                width: "100vw",
+                width: "80vw",
                 maxHeight: "80vh",
                 margin: "auto",
               },
@@ -440,7 +440,7 @@ function Blog({ owner }) {
             </section>
             <section>
               <div className="flex">
-                <h4>{post.caption}</h4>
+                <h4 className="post-caption">{post.caption}</h4>
                 <div className="flex">
                   <p className="post-icon" onClick={() => editPost(post._id)}>
                     ✎

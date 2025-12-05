@@ -360,7 +360,13 @@ function Groups({ owner, city }) {
                 </div>
                 <div className="post-labels">
                   {post.labels?.map((lab, idx) => (
-                    <button key={idx} className="post-label">
+                    <button
+                      key={idx}
+                      className="post-label"
+                      onClick={() =>
+                        setSelectedLabels([...selectedLabels, lab])
+                      }
+                    >
                       {lab}
                     </button>
                   ))}
@@ -401,7 +407,7 @@ function Groups({ owner, city }) {
               </section>
               <section>
                 <div className="flex">
-                  <h4>{post.caption}</h4>
+                  <h4 className="post-caption">{post.caption}</h4>
                 </div>
                 <p>{post.description}</p>
                 <div className="post-rating">

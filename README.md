@@ -1,16 +1,50 @@
-# React + Vite
+# URBIO
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+URBIO is a social platform designed for urban exploration and community engagement. It allows users to connect based on their location, share experiences through blog posts, and join city-specific groups. The application features a trending section to discover popular content and supports rich media uploads.
 
-Currently, two official plugins are available:
+## Tech Stack
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Babel](https://babeljs.io/) (or [oxc](https://oxc.rs) when used in [rolldown-vite](https://vite.dev/guide/rolldown)) for Fast Refresh
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/) for Fast Refresh
+*   **Frontend:** React, Vite, React Router, Axios
+*   **Backend:** Node.js, Express
+*   **Database:** MongoDB (via Mongoose)
+*   **Authentication:** JWT, Bcrypt
+*   **Tools:** Cloudinary (Images)
 
-## React Compiler
+## Key Features
 
-The React Compiler is not enabled on this template because of its impact on dev & build performances. To add it, see [this documentation](https://react.dev/learn/react-compiler/installation).
+*   **User Authentication:** Secure Login and Registration.
+*   **City-Based Content:** Explore content specific to different cities.
+*   **Blogging & Posting:** Create posts with images, captions, and labels.
+*   **Groups:** Join community groups filtered by city.
+*   **Trending Section:** Discover popular posts and cities.
+*   **Comments:** Interact with posts via comments.
 
-## Expanding the ESLint configuration
+## Styling
 
-If you are developing a production application, we recommend using TypeScript with type-aware lint rules enabled. Check out the [TS template](https://github.com/vitejs/vite/tree/main/packages/create-vite/template-react-ts) for information on how to integrate TypeScript and [`typescript-eslint`](https://typescript-eslint.io) in your project.
+The application uses a combination of **Material UI (MUI)** for components and custom **CSS** for specific layouts and theming.
+
+## Installation & Usage
+
+### 1. Install Dependencies
+**Frontend:**
+```bash
+npm install
+```
+
+**Backend:**
+```bash
+cd api
+npm install
+```
+
+### 2. Run the Application
+
+**Start Backend:**
+```bash
+npm start
+```
+
+**Start Frontend:**
+```bash
+npm run dev
+```
