@@ -5,14 +5,14 @@ import { NavLink } from "react-router";
 function Header({ isLoggedIn }) {
   return (
     <div className="flex header-background">
-      <div className="flex">
+      <div className="header-left">
         <img className="logo" src={Logo_Pigeon} alt="URBIO-Logo" />
         <NavLink id="home" to={"/"}>
           <h1>URBIO</h1>
         </NavLink>
       </div>
       {isLoggedIn ? (
-        <div className="flex">
+        <div className="header-right">
           <NavLink className="button-nav" to={"/"}>
             Home
           </NavLink>
@@ -31,10 +31,11 @@ function Header({ isLoggedIn }) {
           {/*
           <NavLink className="button-nav">Events</NavLink>
           */}
+          <p className="button-nav">Logout</p>
           <img className="icon-profile" src={Profile} alt="Profile" />
         </div>
       ) : (
-        <div className="flex">
+        <div className="header-right">
           <NavLink className="button-nav" to={"/login"}>
             Login
           </NavLink>

@@ -7,6 +7,8 @@ import URL from "../config.js";
 function Login({ login }) {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
+  const [message, setMessage] = useState("")
+  const [shown, setShown] = useState(false)
   const navigate = useNavigate();
 
   const handleSubmit = async () => {
@@ -15,6 +17,7 @@ function Login({ login }) {
         email: email.toLowerCase(),
         password: password,
       });
+      console.log(response.data)
       if (response.data.ok) {
         let decodedToken = jose.decodeJwt(response.data.token);
         console.log(
@@ -23,6 +26,9 @@ function Login({ login }) {
         );
         login(response.data.token);
         navigate("/");
+      } else {
+        setShown(true)
+        setMessage("User not found or wrong password")
       }
     } catch (error) {
       console.log(error);
@@ -41,7 +47,12 @@ function Login({ login }) {
             type="password"
             onChange={(e) => setPassword(e.target.value)}
           />
-          <button className="button-login" onClick={handleSubmit}>Login</button>
+          <button className="button-login" onClick={handleSubmit}>
+            Login
+          </button>
+        </div>
+        <div>
+          <h4>{shown && message}</h4>
         </div>
       </div>
     </>

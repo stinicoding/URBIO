@@ -27,7 +27,7 @@ function App() {
         } else {
           axios.defaults.headers.common["Authorization"] = token;
           const response = await axios.post(`${URL}/users/token`);
-          return response.data.ok ? login(token) : logout();
+          return response.data.ok ? login(token) : setIsLoggedIn(false);
         }
       } catch (error) {
         console.log(error);

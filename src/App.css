@@ -157,7 +157,8 @@ button {
     color: white;
     background-color: #E86B92;
     border-radius: 5px;
-    width: 80px;
+    padding: 5px 10px;
+    width: auto;
 }
 
 .button-login {
@@ -178,8 +179,23 @@ button {
 }
 
 .header-background {
+    width: 100vw;
+    box-sizing: border-box;
     background-color: #4e7ce6;
-    padding: 10px 20px 10px 20px;
+    padding: 10px 20px;
+}
+
+/*left and right for responsiveness*/
+.header-left {
+    display: flex;
+    align-items: center;
+    gap: 0.7rem;
+}
+
+.header-right {
+    display: flex;
+    align-items: center;
+    gap: 0.7rem;
 }
 
 .logo {
@@ -260,9 +276,9 @@ button {
     flex-direction: column;
     border: 2px solid #4e7ce6;
     border-radius: 5px;
-    width: 600px;
-    padding: 20px;
-    margin: 20px auto;
+    width: 60vw;
+    padding: 5vw;
+    margin: 10vw auto;
 }
 
 .new-post-form {
@@ -392,4 +408,34 @@ button {
 .upload-url {
     margin: 0;
     color: #4e7ce6;
+}
+
+@media (max-width: 600px) {
+    .grid {
+        grid-template-columns: 1fr;
+    }
+
+    .header-background {
+        flex-direction: column;
+        align-items: flex-start;
+    }
+
+    .header-right {
+        flex-wrap: wrap;
+        gap: 0.5rem;
+    }
+
+    .icon-profile {
+        height: 30px;
+    }
+
+    .splash {
+        background-image: url("./pictures/Barcelona_splash_small.jpg");
+        width: 100vw;
+        height: 50vh;
+    }
+
+    .logo {
+        height: 40px;
+    }
 }

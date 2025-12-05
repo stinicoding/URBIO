@@ -13,6 +13,9 @@ function Register() {
   const [success, setSuccess] = useState(false);
   const navigate = useNavigate();
 
+  console.log(password)
+  console.log(password2)
+
   useEffect(() => {
     setShown(true);
   }, [email, password, password2]);
@@ -20,24 +23,25 @@ function Register() {
   const validateRegistration = async () => {
     if (!name) {
       setMessage("Set a Name");
-    }
-    let email_split1 = email.split("@");
-    let email_split2 = email.split(".");
-    //console.log(email_split1)
-    //console.log(email_split2)
-    if (email_split1.length !== 2 || email_split2.length !== 2) {
-      setMessage("Invalid Email");
-    } else if (password.length < 8) {
-      setMessage("Password must have at least 8 characters.");
-    } else if (password !== password2) {
-      setMessage("Passwords should match.");
     } else {
-      let result = await register();
-      //console.log(result);
-      if (result === true) {
-        setMessage("Successfully registered");
-        setSuccess(true);
-        navigate("/login");
+      let email_split1 = email.split("@");
+      let email_split2 = email.split(".");
+      //console.log(email_split1)
+      //console.log(email_split2)
+      if (email_split1.length !== 2 || email_split2.length !== 2) {
+        setMessage("Invalid Email");
+      } else if (password.length < 8) {
+        setMessage("Password must have at least 8 characters.");
+      } else if (password !== password2) {
+        setMessage("Passwords should match.");
+      } else {
+        let result = await register();
+        //console.log(result);
+        if (result === true) {
+          setMessage("Successfully registered");
+          setSuccess(true);
+          navigate("/login");
+        }
       }
     }
   };
@@ -57,7 +61,7 @@ function Register() {
         return false;
       }
     } catch (error) {
-      return error;
+      console.log(error);
     }
   };
 
@@ -85,7 +89,9 @@ function Register() {
               type="password"
               onChange={(e) => setPassword2(e.target.value)}
             />
-            <button className="button-login" onClick={validateRegistration}>Register</button>
+            <button className="button-login" onClick={validateRegistration}>
+              Register
+            </button>
           </div>
           <div>
             <h4>{shown && message}</h4>
