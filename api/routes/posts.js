@@ -51,7 +51,7 @@ router.post("/getposts", async (req, res) => {
   if (req?.body?.owner) {
     owner = req.body.owner;
   }
-  console.log(`owner: ${owner}`);
+  //console.log(`owner: ${owner}`);
   let postings;
   try {
     if (owner === undefined) {
@@ -115,7 +115,7 @@ router.delete("/deletepost/:post_id", async (req, res) => {
   try {
     const post = await Posts.findByIdAndDelete(post_id);
     const com = await Comments.deleteMany({ post_id: post_id });
-    console.log(`delete: ${(post, com)}`);
+    //console.log(`delete: ${(post, com)}`);
     res.send({ ok: true, data_post: post, data_com: com });
   } catch (error) {
     res.send({ ok: false, message: error });

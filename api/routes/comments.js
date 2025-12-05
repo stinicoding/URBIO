@@ -28,7 +28,7 @@ router.delete("/deletecomment/:comment_id", async (req, res) => {
 
 router.post("/:post_id", async (req, res) => {
   const { post_id } = req.params;
-  console.log(post_id);
+  //console.log(post_id);
   try {
     const comments = await Comments.find({ post_id: post_id }).sort({
       datetime: -1,

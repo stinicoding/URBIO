@@ -76,7 +76,7 @@ router.patch("/updategroups", async (req, res) => {
       { email: owner },
       { groups: labels }
     );
-    console.log(user);
+    //console.log(user);
     res.send({ ok: true, data: user });
   } catch (error) {
     res.send({ ok: false, message: error });

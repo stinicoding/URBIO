@@ -40,7 +40,6 @@ function Groups({ owner, city }) {
   const [labels, setLabels] = useState(labelOptions);
   const [myLabels, setMyLabels] = useState([]);
   const [selectedLabels, setSelectedLabels] = useState([]);
-  const [pictureIndex, setPictureIndex] = useState(0);
   const [comment, setComment] = useState("");
   const [comments, setComments] = useState([]);
   const [showComments, setShowComments] = useState(false);
@@ -68,11 +67,23 @@ function Groups({ owner, city }) {
       //post function, because get will pass the email in the url
       const response = await axios.post(`${URL}/posts/getposts`);
       //console.log(response.data.data);
-      setAllPosts(response.data.data);
-      setFilteredPosts(response.data.data);
+      let modified = response.data.data.map((post) => {
+        //unnest each post, add currentPicture index and store it all in an object
+        return { ...post, currentPicture: 0 };
+      });
+
+      setAllPosts(modified);
+      setFilteredPosts(modified);
     } catch (error) {
       console.log(error);
     }
+  };
+
+  //show the current clicked picture as the main picture of the post
+  const switchIndex = (pic_idx, post_idx) => {
+    let newArr = structuredClone(allPosts);
+    newArr[post_idx].currentPicture = pic_idx;
+    setAllPosts(newArr);
   };
 
   //filers: location, labels, rating, time
@@ -332,7 +343,8 @@ function Groups({ owner, city }) {
       <div>
         {filteredPosts.map(
           (
-            post //map without {} or return to actually render the posts
+            post,
+            post_idx //map without {} or return to actually render the posts
           ) => (
             <div key={post._id} className="post-grid">
               <section>
@@ -345,16 +357,16 @@ function Groups({ owner, city }) {
                 </div>
                 <img
                   className="post-img"
-                  src={post.pictures[pictureIndex]?.url}
+                  src={post.pictures[post.currentPicture]?.url}
                 />
                 <div className="post-img-small-overview">
-                  {post.pictures.map((pic, idx) => (
+                  {post.pictures.map((pic, pic_idx) => (
                     //? before url to update only the posts with several pictures (without it the other posts would crash)
                     <img
                       key={pic.public_id}
                       className="post-img-small"
                       src={pic?.url}
-                      onClick={() => setPictureIndex(idx)}
+                      onClick={() => switchIndex(pic_idx, post_idx)}
                     />
                   ))}
                 </div>
