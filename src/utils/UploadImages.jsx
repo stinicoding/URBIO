@@ -4,6 +4,7 @@ import widgetStyle from "./widgetStyle";
 const UploadImages = (props) => {
   const setPictures = props.setPictures;
   const uploadWidget = () => {
+    /*
     console.log(6, window.cloudinary);
     console.log(
       7,
@@ -14,6 +15,7 @@ const UploadImages = (props) => {
       "api_key:",
       import.meta.env.VITE_CLOUD_API_KEY
     );
+    */
     // remember to add your credentials to the .env file
     window.cloudinary.openUploadWidget(
       {

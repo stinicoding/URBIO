@@ -17,7 +17,7 @@ function Login({ login }) {
         email: email.toLowerCase(),
         password: password,
       });
-      console.log(response.data)
+      //console.log(response.data)
       if (response.data.ok) {
         let decodedToken = jose.decodeJwt(response.data.token);
         console.log(

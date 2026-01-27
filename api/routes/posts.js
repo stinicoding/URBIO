@@ -5,7 +5,7 @@ const Comments = require("../models/Comments.js");
 //Cloudinary for uploading pictures
 const cloudinary = require("cloudinary");
 require("dotenv").config({ path: "./.env" });
-console.log(5, process.env.API_KEY);
+//console.log(5, process.env.API_KEY);
 cloudinary.config({
   cloud_name: process.env.CLOUD_NAME,
   api_key: process.env.API_KEY,

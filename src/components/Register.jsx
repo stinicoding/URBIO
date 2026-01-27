@@ -13,8 +13,8 @@ function Register() {
   const [success, setSuccess] = useState(false);
   const navigate = useNavigate();
 
-  console.log(password)
-  console.log(password2)
+  //console.log(password)
+  //console.log(password2)
 
   useEffect(() => {
     setShown(true);
