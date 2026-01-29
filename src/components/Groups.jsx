@@ -396,7 +396,7 @@ function Groups({ owner, city }) {
                     {showComments ? "Hide Comments" : "Show Comments"}
                   </p>
                   {showComments &&
-                    renderComments(comments, post, async () => {
+                    renderComments(owner, comments, post, async () => {
                       await displayComments(post._id);
                     })}
                   <input
