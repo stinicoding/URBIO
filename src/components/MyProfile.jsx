@@ -3,7 +3,7 @@ import Profile from "../pictures/Profile.png";
 import axios from "axios";
 import URL from "../config.js";
 
-function MyProfile({ owner, owner_name }) {
+function MyProfile({ owner }) {
   const [myLabels, setMyLabels] = useState([]);
   const [name, setName] = useState("");
 
@@ -37,7 +37,6 @@ function MyProfile({ owner, owner_name }) {
       <section className="myprofile">
         <img className="myprofile-picture" src={Profile} alt="Profile" />
         <button>Upload Profile Picture</button>
-        <h2 className="header-owner">{owner}</h2>
       </section>
       <section className="myprofile-info">
         <div className="myprofile-grid">
@@ -45,6 +44,12 @@ function MyProfile({ owner, owner_name }) {
             <strong>Name:</strong>
           </p>
           <p>{name}</p>
+        </div>
+        <div className="myprofile-grid">
+          <p>
+            <strong>E-Mail:</strong>
+          </p>
+          <p>{owner}</p>
         </div>
         <div className="myprofile-grid">
           <p>
