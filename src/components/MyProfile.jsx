@@ -2,15 +2,19 @@ import { useState, useEffect } from "react";
 import Profile from "../pictures/Profile.png";
 import axios from "axios";
 import URL from "../config.js";
+import UploadImages from "../utils/UploadImages.jsx";
 
 function MyProfile({ owner }) {
   const [myLabels, setMyLabels] = useState([]);
   const [name, setName] = useState("");
+  const [pictures, setPictures] = useState([]);
+
+  console.log(pictures)
 
   const getUserName = async () => {
     try {
       const info = await axios.get(`${URL}/users/getinfo/${owner}`);
-      console.log(info.data?.data);
+      //console.log(info.data?.data);
       setName(info.data?.data);
     } catch (error) {
       console.log(error);
@@ -32,11 +36,32 @@ function MyProfile({ owner }) {
     getUserGroups();
   }, []);
 
+  useEffect(() => {
+  if (pictures.length === 0) return;
+  const savePicture = async () => {
+    try {
+      await axios.patch(`${URL}/users/uploadpicture/${owner}`, {
+        email: owner,
+        file: pictures[0],
+      });
+    } catch (error) {
+      console.log(error);
+    }
+  };
+  savePicture();
+}, [pictures]);
+
+
+
   return (
     <>
       <section className="myprofile">
-        <img className="myprofile-picture" src={Profile} alt="Profile" />
-        <button>Upload Profile Picture</button>
+        <img
+          className="myprofile-picture"
+          src={pictures?.length > 0 ? pictures[0].url : Profile}
+          alt="Profile"
+        />
+        <UploadImages required setPictures={setPictures} />
       </section>
       <section className="myprofile-info">
         <div className="myprofile-grid">

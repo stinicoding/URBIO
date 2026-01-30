@@ -104,41 +104,40 @@ router.get("/getgroups/:owner", async (req, res) => {
   }
 });
 
-/*
-//Profile Picture - not implemented yet
-router.post("/uploadpicture", async (req, res) => {
-  const { files } = req.body;
-  let pictures = files.map((pic) => {
-    console.log(13, pic);
-    return {
-      public_id: pic.uploadInfo?.public_id,
-      photo_url: pic.uploadInfo?.secure_url,
+//Profile Picture
+router.patch("/uploadpicture/:owner", async (req, res) => {
+  try {
+    const { owner, file } = req.body;
+    const picture = {
+      public_id: file.uploadInfo.public_id,
+      photo_url: file.uploadInfo.secure_url,
     };
-  });
-
-  try {
-    const created = await Pictures.create(pictures);
-    console.log(created);
-    res.json({ ok: true, created });
+    const user = await Users.findOneAndUpdate(
+      { owner },
+      { picture },
+      { new: true },
+    );
+    res.json({ ok: true, data: user.picture });
   } catch (error) {
-    res.json({ ok: false });
+    res.send({ ok: false, message: error });
   }
 });
 
-router.delete("/removepicture/:_id", async (req, res) => {
-  const { _id } = req.params;
+router.delete("/removepicture/:owner", async (req, res) => {
   try {
-    const deleted = await Pictures.findByIdAndRemove({ _id: _id });
-    if (deleted.public_id) {
-      await cloudinary.v2.api.delete_resources([deleted.public_id]);
-      res.json({ ok: true, deleted });
-    } else {
-      res.json({ ok: false });
+    const { owner } = req.body
+    const user = await Users.findOne({ owner });
+    if (!user?.picture?.public_id) {
+      return res.json({ ok: false });
     }
+    await cloudinary.v2.uploader.destroy(user.picture.public_id);
+    user.picture = null;
+    await user.save();
+    res.json({ ok: true });
   } catch (error) {
-    res.json({ ok: false });
+    res.send({ ok: false, message: error });
   }
 });
-*/
+
 
 module.exports = router;

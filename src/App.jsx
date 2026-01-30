@@ -20,7 +20,7 @@ function App() {
   const [token, setToken] = useState(JSON.parse(localStorage.getItem("token")));
   const [city, setCity] = useState("");
 
-  console.log(user);
+  //console.log(user);
 
   useEffect(() => {
     const verify_token = async () => {
