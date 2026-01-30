@@ -11,7 +11,7 @@ function MyProfile({ owner, owner_name }) {
     try {
       const info = await axios.get(`${URL}/users/getinfo/${owner}`);
       console.log(info.data?.data);
-      setName(info.data?.data)
+      setName(info.data?.data);
     } catch (error) {
       console.log(error);
     }
@@ -34,19 +34,28 @@ function MyProfile({ owner, owner_name }) {
 
   return (
     <>
-      <section className="myprofile-info">
+      <section className="myprofile">
         <img className="myprofile-picture" src={Profile} alt="Profile" />
         <button>Upload Profile Picture</button>
         <h2 className="header-owner">{owner}</h2>
       </section>
       <section className="myprofile-info">
-        <p>Name: {name}</p>
-        <p>Groups: </p>
-        <ul>
-          {myLabels.map((label, idx) => (
-            <li key={idx}>{label}</li>
-          ))}
-        </ul>
+        <div className="myprofile-grid">
+          <p>
+            <strong>Name:</strong>
+          </p>
+          <p>{name}</p>
+        </div>
+        <div className="myprofile-grid">
+          <p>
+            <strong>Groups:</strong>
+          </p>
+          <ul>
+            {myLabels.map((label, idx) => (
+              <li key={idx}>{label}</li>
+            ))}
+          </ul>
+        </div>
       </section>
     </>
   );
