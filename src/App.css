@@ -214,6 +214,14 @@ button {
     gap: 0.7rem;
 }
 
+.header-owner {
+    height: 20px;
+    text-align: center;
+    font-family: Arial, Helvetica, sans-serif;
+    font-size: 16px;
+    color: white;
+}
+
 .logo {
     height: 70px;
 }
@@ -295,6 +303,18 @@ button {
     width: 60vw;
     padding: 5vw;
     margin: 10vw auto;
+}
+
+.myprofile-picture {
+    height: 180px;
+    width: 180px;
+}
+
+.myprofile-info {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
 }
 
 .new-post-form {

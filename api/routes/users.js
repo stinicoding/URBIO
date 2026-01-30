@@ -74,10 +74,20 @@ router.patch("/updategroups", async (req, res) => {
   try {
     const user = await Users.findOneAndUpdate(
       { email: owner },
-      { groups: labels }
+      { groups: labels },
     );
     //console.log(user);
     res.send({ ok: true, data: user });
+  } catch (error) {
+    res.send({ ok: false, message: error });
+  }
+});
+
+router.get("/getinfo/:owner", async (req, res) => {
+  const { owner } = req.params;
+  try {
+    const user = await Users.find({ email: owner });
+    res.send({ ok: true, data: user[0].name });
   } catch (error) {
     res.send({ ok: false, message: error });
   }
