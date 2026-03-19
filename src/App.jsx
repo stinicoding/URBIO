@@ -6,7 +6,7 @@ import axios from "axios";
 import URL from "./config.js";
 import Header from "./components/Header";
 import Footer from "./components/Footer";
-import MyProfile from "./components/MyProfile.jsx";
+//import MyProfile from "./components/MyProfile.jsx";
 import Startpage from "./components/Startpage";
 import Trending from "./components/Trending";
 import Login from "./components/Login";
@@ -58,7 +58,9 @@ function App() {
         />
         <Routes>
           <Route path="/" element={<Startpage setCity={setCity} />} />
+          {/*
           <Route path="/profile" element={<MyProfile owner={user?.email} />} />
+          */}
           <Route path="/register" element={<Register />} />
           <Route path="/login" element={<Login login={login} />} />
           <Route path="/trending" element={<Trending setCity={setCity} />} />

@@ -14,9 +14,12 @@ function Header({ isLoggedIn, setIsLoggedIn, owner }) {
         </div>
         {isLoggedIn ? (
           <div className="header-right">
+            {/* 
             <NavLink to={"/profile"}>
             <img className="icon-profile" src={Profile} alt="Profile" />
             </NavLink>
+            */}
+            <img className="icon-profile" src={Profile} alt="Profile" />
             <p className="header-owner">{owner}</p>
             <NavLink
               className="button-nav"
