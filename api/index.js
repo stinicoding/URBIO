@@ -1,17 +1,19 @@
+require("dotenv").config();
 const express = require("express");
 const app =express()
-require("dotenv").config();
 const port = process.env.PORT || 4040;
 
 app.use(require("express").urlencoded({ extended: true }));
 app.use(require("express").json());
+
+console.log("MONGO ENV:", process.env.MONGO);
 
 async function connectingToDB() {
   try {
     await require("mongoose").connect(process.env.MONGO);
     console.log("Connected to the DB ✅");
   } catch (error) {
-    console.log("ERROR: Your DB is not running, start it up ☢️");
+    console.log("ERROR: Your DB is not running, start it up ☢️", error);
   }
 }
 connectingToDB();

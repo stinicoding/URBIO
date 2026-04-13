@@ -2,6 +2,7 @@ import { useState, useEffect } from "react";
 import { useNavigate } from "react-router";
 import axios from "axios";
 import URL from "../config.js";
+import validator from "validator";
 
 function Register() {
   const [name, setName] = useState("");
@@ -24,11 +25,9 @@ function Register() {
     if (!name) {
       setMessage("Set a Name");
     } else {
-      let email_split1 = email.split("@");
-      let email_split2 = email.split(".");
-      //console.log(email_split1)
-      //console.log(email_split2)
-      if (email_split1.length !== 2 || email_split2.length !== 2) {
+      let check_email = validator.isEmail(email);
+      console.log(check_email)
+      if (!check_email) {
         setMessage("Invalid Email");
       } else if (password.length < 8) {
         setMessage("Password must have at least 8 characters.");
@@ -58,6 +57,7 @@ function Register() {
       if (response.data.ok) {
         return true;
       } else {
+        console.log(error)
         return false;
       }
     } catch (error) {
