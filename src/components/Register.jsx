@@ -16,6 +16,8 @@ function Register() {
 
   //console.log(password)
   //console.log(password2)
+  //console.log(email)
+  //console.log(validator.isEmail(email))
 
   useEffect(() => {
     setShown(true);
@@ -26,8 +28,9 @@ function Register() {
       setMessage("Set a Name");
     } else {
       let check_email = validator.isEmail(email);
-      console.log(check_email)
-      if (!check_email) {
+      //console.log(check_email)
+      //console.log(!check_email)
+      if (check_email === false) {
         setMessage("Invalid Email");
       } else if (password.length < 8) {
         setMessage("Password must have at least 8 characters.");
@@ -54,14 +57,10 @@ function Register() {
         password2: password2,
       });
       //console.log(response);
-      if (response.data.ok) {
-        return true;
-      } else {
-        console.log(error)
-        return false;
-      }
+      return response.data.ok === true;
     } catch (error) {
       console.log(error);
+      return false;
     }
   };
 
