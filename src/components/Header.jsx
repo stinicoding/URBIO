@@ -2,7 +2,7 @@ import Logo_Pigeon from "../pictures/Logo_Pigeon.png";
 import Profile from "../pictures/Profile.png";
 import { NavLink } from "react-router";
 
-function Header({ isLoggedIn, setIsLoggedIn, owner }) {
+function Header({ isLoggedIn, setIsLoggedIn, username }) {
   return (
     <div className="header-background">
       <div className="flex">
@@ -20,7 +20,7 @@ function Header({ isLoggedIn, setIsLoggedIn, owner }) {
             </NavLink>
             */}
             <img className="icon-profile" src={Profile} alt="Profile" />
-            <p className="header-owner">{owner}</p>
+            <p className="header-owner">{username}</p>
             <NavLink
               className="button-nav"
               to={"/"}

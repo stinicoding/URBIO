@@ -17,10 +17,11 @@ import Groups from "./components/Groups";
 function App() {
   const [isLoggedIn, setIsLoggedIn] = useState(false);
   const [user, setUser] = useState(JSON.parse(localStorage.getItem("user")));
+  const [username, setUsername] = useState("");
   const [token, setToken] = useState(JSON.parse(localStorage.getItem("token")));
   const [city, setCity] = useState("");
 
-  //console.log(user);
+  console.log(user);
 
   useEffect(() => {
     const verify_token = async () => {
@@ -46,6 +47,17 @@ function App() {
     localStorage.setItem("user", JSON.stringify(user));
     setUser(user);
     setIsLoggedIn(true);
+    getUserName();
+  };
+
+  const getUserName = async () => {
+    try {
+      const info = await axios.get(`${URL}/users/getinfo/${user?.email}`);
+      //console.log(info.data?.data);
+      setUsername(info.data?.data);
+    } catch (error) {
+      console.log(error);
+    }
   };
 
   return (
@@ -54,7 +66,7 @@ function App() {
         <Header
           isLoggedIn={isLoggedIn}
           setIsLoggedIn={setIsLoggedIn}
-          owner={user?.email}
+          username={username}
         />
         <Routes>
           <Route path="/" element={<Startpage setCity={setCity} />} />
@@ -64,10 +76,15 @@ function App() {
           <Route path="/register" element={<Register />} />
           <Route path="/login" element={<Login login={login} />} />
           <Route path="/trending" element={<Trending setCity={setCity} />} />
-          <Route path="/blog" element={<Blog owner={user?.email} />} />
+          <Route
+            path="/blog"
+            element={<Blog owner={user?.email} username={username} />}
+          />
           <Route
             path="/groups"
-            element={<Groups owner={user?.email} city={city} />}
+            element={
+              <Groups owner={user?.email} username={username} city={city} />
+            }
           />
         </Routes>
         <Footer />

@@ -29,7 +29,7 @@ import dayjs from "dayjs"; //npm install @mui/x-date-pickers dayjs
 import StarIcon from "@mui/icons-material/Star";
 import StarBorderIcon from "@mui/icons-material/StarBorder";
 
-function Blog({ owner }) {
+function Blog({ owner, username }) {
   const [open, setOpen] = useState(false);
   const [caption, setCaption] = useState("");
   const [description, setDescription] = useState("");
@@ -244,7 +244,7 @@ function Blog({ owner }) {
       <div>
         {allPosts.length < 1 && (
           <div>
-            <h4>Create your first Post!</h4>
+            <h4>Create your first Post, {username}!</h4>
           </div>
         )}
         <Fragment>

@@ -25,7 +25,7 @@ The application uses a combination of **Material UI (MUI)** for components and c
 
 ## Installation & Usage
 
-### 1. Install Dependencies
+### Install Dependencies
 **Frontend:**
 ```bash
 npm install
